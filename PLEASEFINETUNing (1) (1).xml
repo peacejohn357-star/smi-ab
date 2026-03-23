@@ -120,14 +120,46 @@
                           <block type="lists_create_with" id="p0=1OChpr*$PAx]m2_MS">
                             <field name="VARIABLE" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
                             <next>
-                              <block type="variables_set" id="init_tick_warmup">
-                                <field name="VAR" id="v_tick_warmup">tick_warmup</field>
+                              <block type="variables_set" id="init_smi_ema_1">
+                                <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
                                 <value name="VALUE">
-                                  <block type="math_number" id="init_tick_warmup_val">
+                                  <block type="math_number" id="init_smi_ema_1_val">
                                     <field name="NUM">0</field>
                                   </block>
                                 </value>
                                 <next>
+                                  <block type="variables_set" id="init_smi_final">
+                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
+                                    <value name="VALUE">
+                                      <block type="math_number" id="init_smi_final_val">
+                                        <field name="NUM">0</field>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="variables_set" id="init_smi_prior">
+                                        <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</field>
+                                        <value name="VALUE">
+                                          <block type="math_number" id="init_smi_prior_val">
+                                            <field name="NUM">0</field>
+                                          </block>
+                                        </value>
+                                        <next>
+                                          <block type="variables_set" id="init_smi_slope">
+                                            <field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field>
+                                            <value name="VALUE">
+                                              <block type="math_number" id="init_smi_slope_val">
+                                                <field name="NUM">0</field>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="variables_set" id="init_tick_warmup">
+                                                <field name="VAR" id="v_tick_warmup">tick_warmup</field>
+                                                <value name="VALUE">
+                                                  <block type="math_number" id="init_tick_warmup_val">
+                                                    <field name="NUM">0</field>
+                                                  </block>
+                                                </value>
+                                                <next>
                                   <block type="variables_set" id="init_macd_line">
                                     <field name="VAR" id="v_macd_line">macd_line</field>
                                     <value name="VALUE">
