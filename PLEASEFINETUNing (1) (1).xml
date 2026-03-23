@@ -1320,24 +1320,47 @@
                                                       </block>
                                                     </value>
                                                     <next>
-                                                      <block type="ema_statement" id="7Q299r/`gADH4_/!ck]q">
-                                                        <field name="VARIABLE" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
-                                                        <statement name="STATEMENT">
-                                                          <block type="input_list" id="UvAAi8f+L2b@FH_(DyL/" deletable="false" movable="false">
-                                                            <value name="INPUT_LIST">
-                                                              <block type="variables_get" id="k`SsIEqv}FX]=^lRyb3}">
-                                                                <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                              </block>
-                                                            </value>
-                                                            <next>
-                                                              <block type="period" id=":_0|dxo@9qC58pk]v0au" deletable="false" movable="false">
-                                                                <value name="PERIOD">
-                                                                  <shadow type="math_number" id="]Bj7ZLDA(YS]=SHwO{Z|">
-                                                                    <field name="NUM">3</field>
-                                                                  </shadow>
+                                                      <block type="controls_if" id="smi_data_length_guard">
+                                                        <value name="IF0">
+                                                          <block type="logic_compare" id="smi_data_length_compare">
+                                                            <field name="OP">GTE</field>
+                                                            <value name="A">
+                                                              <block type="lists_length" id="smi_data_length_block">
+                                                                <value name="VALUE">
+                                                                  <block type="variables_get" id="smi_data_length_var">
+                                                                    <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
+                                                                  </block>
                                                                 </value>
                                                               </block>
-                                                            </next>
+                                                            </value>
+                                                            <value name="B">
+                                                              <block type="math_number" id="smi_data_min_period">
+                                                                <field name="NUM">3</field>
+                                                              </block>
+                                                            </value>
+                                                          </block>
+                                                        </value>
+                                                        <statement name="DO0">
+                                                          <block type="ema_statement" id="7Q299r/`gADH4_/!ck]q">
+                                                            <field name="VARIABLE" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
+                                                            <statement name="STATEMENT">
+                                                              <block type="input_list" id="UvAAi8f+L2b@FH_(DyL/" deletable="false" movable="false">
+                                                                <value name="INPUT_LIST">
+                                                                  <block type="variables_get" id="k`SsIEqv}FX]=^lRyb3}">
+                                                                    <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
+                                                                  </block>
+                                                                </value>
+                                                                <next>
+                                                                  <block type="period" id=":_0|dxo@9qC58pk]v0au" deletable="false" movable="false">
+                                                                    <value name="PERIOD">
+                                                                      <shadow type="math_number" id="]Bj7ZLDA(YS]=SHwO{Z|">
+                                                                        <field name="NUM">3</field>
+                                                                      </shadow>
+                                                                    </value>
+                                                                  </block>
+                                                                </next>
+                                                              </block>
+                                                            </statement>
                                                           </block>
                                                         </statement>
                                                         <next>
@@ -1356,24 +1379,47 @@
                                                               </block>
                                                             </value>
                                                             <next>
-                                                              <block type="ema_statement" id=",@t@h]([KRa+dXAqxx^D">
-                                                                <field name="VARIABLE" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                <statement name="STATEMENT">
-                                                                  <block type="input_list" id="J7|g9U_W~+w}`?GP:.9R" deletable="false" movable="false">
-                                                                    <value name="INPUT_LIST">
-                                                                      <block type="variables_get" id="--N7MVV1*F]qVNXu]y7V">
-                                                                        <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                                      </block>
-                                                                    </value>
-                                                                    <next>
-                                                                      <block type="period" id="M?:M3z9UwO{tR68HG5c," deletable="false" movable="false">
-                                                                        <value name="PERIOD">
-                                                                          <shadow type="math_number" id="HmcbrrzBXx}T!V]AL@GN">
-                                                                            <field name="NUM">3</field>
-                                                                          </shadow>
+                                                              <block type="controls_if" id="smi_smoothed_length_guard">
+                                                                <value name="IF0">
+                                                                  <block type="logic_compare" id="smi_smoothed_length_compare">
+                                                                    <field name="OP">GTE</field>
+                                                                    <value name="A">
+                                                                      <block type="lists_length" id="smi_smoothed_length_block">
+                                                                        <value name="VALUE">
+                                                                          <block type="variables_get" id="smi_smoothed_length_var">
+                                                                            <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
+                                                                          </block>
                                                                         </value>
                                                                       </block>
-                                                                    </next>
+                                                                    </value>
+                                                                    <value name="B">
+                                                                      <block type="math_number" id="smi_smoothed_min_period">
+                                                                        <field name="NUM">3</field>
+                                                                      </block>
+                                                                    </value>
+                                                                  </block>
+                                                                </value>
+                                                                <statement name="DO0">
+                                                                  <block type="ema_statement" id=",@t@h]([KRa+dXAqxx^D">
+                                                                    <field name="VARIABLE" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
+                                                                    <statement name="STATEMENT">
+                                                                      <block type="input_list" id="J7|g9U_W~+w}`?GP:.9R" deletable="false" movable="false">
+                                                                        <value name="INPUT_LIST">
+                                                                          <block type="variables_get" id="--N7MVV1*F]qVNXu]y7V">
+                                                                            <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
+                                                                          </block>
+                                                                        </value>
+                                                                        <next>
+                                                                          <block type="period" id="M?:M3z9UwO{tR68HG5c," deletable="false" movable="false">
+                                                                            <value name="PERIOD">
+                                                                              <shadow type="math_number" id="HmcbrrzBXx}T!V]AL@GN">
+                                                                                <field name="NUM">3</field>
+                                                                              </shadow>
+                                                                            </value>
+                                                                          </block>
+                                                                        </next>
+                                                                      </block>
+                                                                    </statement>
                                                                   </block>
                                                                 </statement>
                                                                 <next>
