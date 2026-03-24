@@ -1271,19 +1271,61 @@
                                       </block>
                                     </value>
                                     <next>
+                                      <!-- FIX: High_List now uses a sublist of OHLC *high* values (last 10 candles).
+                                           Previously incorrectly set to Fast_List (tick/close data),
+                                           causing max(High_List) to equal max close price instead of the true candle high. -->
                                       <block type="variables_set" id="smi_high_list_set">
+                                        <comment pinned="false" h="100" w="320">FIX: High_List = last 10 OHLC high values (candle highs, not tick data) for correct SMI highest-high window.</comment>
                                         <field name="VAR" id="smi_high_list_id">High_List</field>
                                         <value name="VALUE">
-                                          <block type="variables_get" id="smi_high_fast_ref">
-                                            <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">Fast_List</field>
+                                          <block type="lists_getSublist" id="smi_high_sublist_fix">
+                                            <mutation xmlns="http://www.w3.org/1999/xhtml" at1="true" at2="false"></mutation>
+                                            <field name="WHERE1">FROM_END</field>
+                                            <field name="WHERE2">LAST</field>
+                                            <value name="LIST">
+                                              <block type="ohlc_values_in_list" id="smi_high_ohlc_vals">
+                                                <field name="OHLCFIELD_LIST">high</field>
+                                                <value name="OHLCLIST">
+                                                  <block type="ohlc" id="smi_high_ohlc_src">
+                                                    <field name="CANDLEINTERVAL_LIST">60</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="AT1">
+                                              <block type="math_number" id="smi_high_window">
+                                                <field name="NUM">10</field>
+                                              </block>
+                                            </value>
                                           </block>
                                         </value>
                                         <next>
+                                          <!-- FIX: Low_List now uses a sublist of OHLC *low* values (last 10 candles).
+                                               Previously incorrectly set to Fast_List (tick/close data),
+                                               causing min(Low_List) to equal min close price instead of the true candle low. -->
                                           <block type="variables_set" id="smi_low_list_set">
+                                            <comment pinned="false" h="100" w="320">FIX: Low_List = last 10 OHLC low values (candle lows, not tick data) for correct SMI lowest-low window.</comment>
                                             <field name="VAR" id="smi_low_list_id">Low_List</field>
                                             <value name="VALUE">
-                                              <block type="variables_get" id="smi_low_fast_ref">
-                                                <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">Fast_List</field>
+                                              <block type="lists_getSublist" id="smi_low_sublist_fix">
+                                                <mutation xmlns="http://www.w3.org/1999/xhtml" at1="true" at2="false"></mutation>
+                                                <field name="WHERE1">FROM_END</field>
+                                                <field name="WHERE2">LAST</field>
+                                                <value name="LIST">
+                                                  <block type="ohlc_values_in_list" id="smi_low_ohlc_vals">
+                                                    <field name="OHLCFIELD_LIST">low</field>
+                                                    <value name="OHLCLIST">
+                                                      <block type="ohlc" id="smi_low_ohlc_src">
+                                                        <field name="CANDLEINTERVAL_LIST">60</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="AT1">
+                                                  <block type="math_number" id="smi_low_window">
+                                                    <field name="NUM">10</field>
+                                                  </block>
+                                                </value>
                                               </block>
                                             </value>
                                             <next>
@@ -1572,7 +1614,11 @@
                                                                                           </block>
                                                                                         </value>
                                                                                         <next>
+                                                                                          <!-- CORRECT ORDER: notify SMI_Slope first, THEN update SMI_Prior = SMI_Final.
+                                                                                               This guarantees SMI_Prior always holds the previous tick's SMI_Final
+                                                                                               so SMI_Slope = abs(SMI_Final - SMI_Prior) reflects the true tick-to-tick change. -->
                                                                                           <block type="notify" id="zyUm)LRBZ/cP!/:HpT^S">
+                                                                                            <comment pinned="false" h="80" w="320">Step 1: Notify with SMI_Slope (old SMI_Prior vs new SMI_Final = correct diff).</comment>
                                                                                             <field name="NOTIFICATION_TYPE">success</field>
                                                                                             <field name="NOTIFICATION_SOUND">silent</field>
                                                                                             <value name="MESSAGE">
@@ -1584,7 +1630,9 @@
                                                                                               </block>
                                                                                             </value>
                                                                                             <next>
+                                                                                              <!-- Step 2: Update SMI_Prior AFTER notify so next tick's slope is correct. -->
                                                                                               <block type="variables_set" id="miQi_,.Ov74t8-kR#6?j">
+                                                                                                <comment pinned="false" h="80" w="320">Step 2: SMI_Prior = SMI_Final AFTER notify. Preserves previous value for next tick's slope.</comment>
                                                                                                 <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</field>
                                                                                                 <value name="VALUE">
                                                                                                   <block type="variables_get" id="jQeF4Xmn%$pBQIHATR8H">
