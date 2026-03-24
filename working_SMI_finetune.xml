@@ -6,23 +6,23 @@
     <variable id="v_cooldown_counter">cooldown_counter</variable>
     <variable id="v_multiplier">martingale_multiplier</variable>
     <variable id="v_entry_side">entry_side</variable>
-    <variable id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</variable>
+    <variable id="wyH7=]DV[E#j!QdPjJly">Smooth_K</variable>
     <variable id="v_entry_hist">entry_hist</variable>
-    <variable id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</variable>
+    <variable id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</variable>
     <variable id="$qh|nR[O`mjD`=P@QWDx">last_histogram</variable>
     <variable id="v_entry_hist_prev">entry_hist_prev</variable>
     <variable id="[6Ww!y#PNM1y,5,I$jlp"> candles_1m</variable>
-    <variable id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</variable>
+    <variable id="_0-cW.9/4PpYxKm7WZd3">S:K</variable>
     <variable id="v_prev_hist">prev_histogram</variable>
     <variable id="v_entry_line">entry_line</variable>
-    <variable id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</variable>
+    <variable id="SsOL)9k:n-YE{IyR]r-z">S:D</variable>
     <variable id="#j4xss#FZJL1n}fX@6^_">last_macd_line</variable>
     <variable id="v_entry_sig">entry_sig</variable>
-    <variable id="Z~!~fr7w+ZxI?,0`2FC;">Fast_List</variable>
+    <variable id="Z~!~fr7w+ZxI?,0`2FC;">S:Klist</variable>
     <variable id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</variable>
     <variable id="+3WHuxNmMx}45=zST`-Z">last_macd_signal</variable>
     <variable id="v_entry_spread">entry_spread</variable>
-    <variable id="=9}ul6mT4]itI?M{oK3;">Midpoint</variable>
+    <variable id="=9}ul6mT4]itI?M{oK3;">_smoothK</variable>
     <variable id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</variable>
     <variable id="v_entry_rsi">entry_rsi</variable>
     <variable id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</variable>
@@ -46,9 +46,8 @@
     <variable id="v_bb_lower">lower_band</variable>
     <variable id="hOY^zrf8mH{32M.y3sVB">ema_1min</variable>
     <variable id="v_entry_bb_w_prev">entry_bb_w_prev</variable>
-    <variable id="smi_high_list_id">High_List</variable>
-    <variable id="smi_low_list_id">Low_List</variable>
-    <variable id="smi_divisor_id">Divisor</variable>
+    <variable id="smi_low_list_id">_length</variable>
+    <variable id="smi_divisor_id">_smoothD</variable>
   </variables>
   <block type="trade_definition" id="td_main" deletable="false" x="0" y="60">
     <statement name="TRADE_OPTIONS">
@@ -117,14 +116,41 @@
                       </block>
                     </value>
                     <next>
-                      <block type="lists_create_with" id="T)OIZk;;2)p/(~zl#yv0">
-                        <field name="VARIABLE" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
+                      <block type="variables_set" id="stoch_init_length">
+                        <comment pinned="false" h="60" w="220">Stochastic config: lookback period</comment>
+                        <field name="VAR" id="smi_low_list_id">_length</field>
+                        <value name="VALUE">
+                          <block type="math_number" id="stoch_init_length_val">
+                            <field name="NUM">14</field>
+                          </block>
+                        </value>
                         <next>
-                          <block type="lists_create_with" id="p0=1OChpr*$PAx]m2_MS">
-                            <field name="VARIABLE" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
+                          <block type="variables_set" id="stoch_init_smoothk_cfg">
+                            <comment pinned="false" h="60" w="220">Stochastic config: %K smoothing period (SMA)</comment>
+                            <field name="VAR" id="=9}ul6mT4]itI?M{oK3;">_smoothK</field>
+                            <value name="VALUE">
+                              <block type="math_number" id="stoch_init_smoothk_cfg_val">
+                                <field name="NUM">3</field>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="variables_set" id="stoch_init_smoothd_cfg">
+                                <comment pinned="false" h="60" w="220">Stochastic config: %D smoothing period (SMA)</comment>
+                                <field name="VAR" id="smi_divisor_id">_smoothD</field>
+                                <value name="VALUE">
+                                  <block type="math_number" id="stoch_init_smoothd_cfg_val">
+                                    <field name="NUM">3</field>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="lists_create_with" id="stoch_init_smooth_k">
+                                    <field name="VARIABLE" id="wyH7=]DV[E#j!QdPjJly">Smooth_K</field>
+                        <next>
+                          <block type="lists_create_with" id="stoch_init_smooth_d">
+                            <field name="VARIABLE" id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</field>
                             <next>
                               <block type="variables_set" id=")ry@ee0o:S7T[OVL+qNz">
-                                <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
+                                <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">S:K</field>
                                 <value name="VALUE">
                                   <block type="math_number" id="`mH|t+Wz5]JLl%*h_?(E">
                                     <field name="NUM">0</field>
@@ -132,7 +158,7 @@
                                 </value>
                                 <next>
                                   <block type="variables_set" id="MfsRq)BL/D:c=,4]HkFR">
-                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
+                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">S:D</field>
                                     <value name="VALUE">
                                       <block type="math_number" id="~5/5(5.YY5E@ayZtgwoM">
                                         <field name="NUM">0</field>
@@ -363,6 +389,12 @@
           </block>
         </next>
       </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </next>
+    </block>
     </statement>
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="trade_opts">
@@ -1253,106 +1285,86 @@
                                   </block>
                                 </value>
                                 <next>
-                                  <block type="variables_set" id="t(3kQ6QiO`IEV!ukBM}6">
-                                    <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">Fast_List</field>
+                                  <!-- ================================================================
+                                       STOCHASTIC OSCILLATOR (Tick-Based, Pure Tick Mode)
+                                       Reference: Stochastics Bot Free_Rise-Fall BinaryTools 2023
+                                       Config: _length=14, _smoothK=3, _smoothD=3
+                                       %K = 100*(CurrentClose-LowestLow)/(HighestHigh-LowestLow)
+                                       S:K  = SMA(_smoothK) of raw %K values
+                                       S:D  = SMA(_smoothD) of S:K values (%D signal line)
+                                       SMI_Slope = abs(S:K - S:D)  [used in CALL/PUT conditions]
+                                       Output: S:K and S:D always bounded to [0..100]
+                                       ================================================================ -->
+                                  <block type="variables_set" id="stoch_klist_set">
+                                    <comment pinned="false" h="60" w="320">Stochastic: S:Klist = last _length tick closes (sublist)</comment>
+                                    <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">S:Klist</field>
                                     <value name="VALUE">
-                                      <block type="lists_getSublist" id="}I3uxLuQYYUOHhJ:$@Y(">
+                                      <block type="lists_getSublist" id="stoch_klist_sub">
                                         <mutation xmlns="http://www.w3.org/1999/xhtml" at1="true" at2="false"></mutation>
                                         <field name="WHERE1">FROM_END</field>
                                         <field name="WHERE2">LAST</field>
                                         <value name="LIST">
-                                          <block type="ticks" id="[QUy/cTnn0g#QVqDeh55"></block>
+                                          <block type="ticks" id="stoch_ticks_ref"></block>
                                         </value>
                                         <value name="AT1">
-                                          <block type="math_number" id="g86j-1ZQ)QOmk86V08UO">
-                                            <field name="NUM">10</field>
+                                          <block type="variables_get" id="stoch_length_ref">
+                                            <field name="VAR" id="smi_low_list_id">_length</field>
                                           </block>
                                         </value>
                                       </block>
                                     </value>
                                     <next>
-                                      <!-- FIX: High_List now uses a sublist of OHLC *high* values (last 10 candles).
-                                           Previously incorrectly set to Fast_List (tick/close data),
-                                           causing max(High_List) to equal max close price instead of the true candle high. -->
-                                      <block type="variables_set" id="smi_high_list_set">
-                                        <comment pinned="false" h="100" w="320">FIX: High_List = last 10 OHLC high values (candle highs, not tick data) for correct SMI highest-high window.</comment>
-                                        <field name="VAR" id="smi_high_list_id">High_List</field>
-                                        <value name="VALUE">
-                                          <block type="lists_getSublist" id="smi_high_sublist_fix">
-                                            <mutation xmlns="http://www.w3.org/1999/xhtml" at1="true" at2="false"></mutation>
-                                            <field name="WHERE1">FROM_END</field>
-                                            <field name="WHERE2">LAST</field>
-                                            <value name="LIST">
-                                              <block type="ohlc_values_in_list" id="smi_high_ohlc_vals">
-                                                <field name="OHLCFIELD_LIST">high</field>
-                                                <value name="OHLCLIST">
-                                                  <block type="ohlc" id="smi_high_ohlc_src">
-                                                    <field name="CANDLEINTERVAL_LIST">60</field>
+                                      <!-- Block 2: Guard then raw %K = 100*(close-LL)/(HH-LL), insert to Smooth_K -->
+                                      <block type="controls_if" id="stoch_divisor_guard">
+                                        <comment pinned="false" h="60" w="320">Stochastic: raw %K only when HighestHigh != LowestLow</comment>
+                                        <value name="IF0">
+                                          <block type="logic_compare" id="stoch_range_neq">
+                                            <field name="OP">NEQ</field>
+                                            <value name="A">
+                                              <block type="math_on_list" id="stoch_hh_chk">
+                                                <field name="OP">MAX</field>
+                                                <value name="LIST">
+                                                  <block type="variables_get" id="stoch_klist_hh">
+                                                    <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">S:Klist</field>
                                                   </block>
                                                 </value>
                                               </block>
                                             </value>
-                                            <value name="AT1">
-                                              <block type="math_number" id="smi_high_window">
-                                                <field name="NUM">10</field>
+                                            <value name="B">
+                                              <block type="math_on_list" id="stoch_ll_chk">
+                                                <field name="OP">MIN</field>
+                                                <value name="LIST">
+                                                  <block type="variables_get" id="stoch_klist_ll">
+                                                    <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">S:Klist</field>
+                                                  </block>
+                                                </value>
                                               </block>
                                             </value>
                                           </block>
                                         </value>
-                                        <next>
-                                          <!-- FIX: Low_List now uses a sublist of OHLC *low* values (last 10 candles).
-                                               Previously incorrectly set to Fast_List (tick/close data),
-                                               causing min(Low_List) to equal min close price instead of the true candle low. -->
-                                          <block type="variables_set" id="smi_low_list_set">
-                                            <comment pinned="false" h="100" w="320">FIX: Low_List = last 10 OHLC low values (candle lows, not tick data) for correct SMI lowest-low window.</comment>
-                                            <field name="VAR" id="smi_low_list_id">Low_List</field>
+                                        <statement name="DO0">
+                                          <block type="variables_set" id="stoch_raw_k_set">
+                                            <comment pinned="false" h="60" w="320">Stochastic: Raw_Data = 100*(close-LowestLow)/(HighestHigh-LowestLow)</comment>
+                                            <field name="VAR" id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</field>
                                             <value name="VALUE">
-                                              <block type="lists_getSublist" id="smi_low_sublist_fix">
-                                                <mutation xmlns="http://www.w3.org/1999/xhtml" at1="true" at2="false"></mutation>
-                                                <field name="WHERE1">FROM_END</field>
-                                                <field name="WHERE2">LAST</field>
-                                                <value name="LIST">
-                                                  <block type="ohlc_values_in_list" id="smi_low_ohlc_vals">
-                                                    <field name="OHLCFIELD_LIST">low</field>
-                                                    <value name="OHLCLIST">
-                                                      <block type="ohlc" id="smi_low_ohlc_src">
-                                                        <field name="CANDLEINTERVAL_LIST">60</field>
-                                                      </block>
-                                                    </value>
-                                                  </block>
-                                                </value>
-                                                <value name="AT1">
-                                                  <block type="math_number" id="smi_low_window">
-                                                    <field name="NUM">10</field>
-                                                  </block>
-                                                </value>
-                                              </block>
-                                            </value>
-                                            <next>
-                                              <block type="variables_set" id=")i)Z%9bU@?0w`$/=c=jY">
-                                                <field name="VAR" id="=9}ul6mT4]itI?M{oK3;">Midpoint</field>
-                                                <value name="VALUE">
-                                                  <block type="math_arithmetic" id="smi_midpoint_div2">
+                                              <block type="math_arithmetic" id="stoch_k_x100">
+                                                <field name="OP">MULTIPLY</field>
+                                                <value name="A">
+                                                  <block type="math_arithmetic" id="stoch_k_div">
                                                     <field name="OP">DIVIDE</field>
                                                     <value name="A">
-                                                      <block type="math_arithmetic" id="smi_midpoint_add">
-                                                        <field name="OP">ADD</field>
+                                                      <block type="math_arithmetic" id="stoch_close_ll">
+                                                        <field name="OP">MINUS</field>
                                                         <value name="A">
-                                                          <block type="math_on_list" id="smi_max_high">
-                                                            <field name="OP">MAX</field>
-                                                            <value name="LIST">
-                                                              <block type="variables_get" id="smi_high_list_ref1">
-                                                                <field name="VAR" id="smi_high_list_id">High_List</field>
-                                                              </block>
-                                                            </value>
-                                                          </block>
+                                                          <shadow type="math_number" id="stoch_close_shd"><field name="NUM">0</field></shadow>
+                                                          <block type="tick" id="stoch_cur_close"></block>
                                                         </value>
                                                         <value name="B">
-                                                          <block type="math_on_list" id="smi_min_low">
+                                                          <block type="math_on_list" id="stoch_ll_a">
                                                             <field name="OP">MIN</field>
                                                             <value name="LIST">
-                                                              <block type="variables_get" id="smi_low_list_ref1">
-                                                                <field name="VAR" id="smi_low_list_id">Low_List</field>
+                                                              <block type="variables_get" id="stoch_klist_ll_a">
+                                                                <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">S:Klist</field>
                                                               </block>
                                                             </value>
                                                           </block>
@@ -1360,382 +1372,342 @@
                                                       </block>
                                                     </value>
                                                     <value name="B">
-                                                      <block type="math_number" id="smi_midpoint_2a">
-                                                        <field name="NUM">2</field>
-                                                      </block>
-                                                    </value>
-                                                  </block>
-                                                </value>
-                                                <next>
-                                                  <block type="variables_set" id="smi_divisor_set">
-                                                    <field name="VAR" id="smi_divisor_id">Divisor</field>
-                                                    <value name="VALUE">
-                                                      <block type="math_arithmetic" id="smi_divisor_div2">
-                                                        <field name="OP">DIVIDE</field>
+                                                      <block type="math_arithmetic" id="stoch_hh_ll">
+                                                        <field name="OP">MINUS</field>
                                                         <value name="A">
-                                                          <block type="math_arithmetic" id="smi_divisor_sub">
-                                                            <field name="OP">MINUS</field>
-                                                            <value name="A">
-                                                              <block type="math_on_list" id="smi_max_high2">
-                                                                <field name="OP">MAX</field>
-                                                                <value name="LIST">
-                                                                  <block type="variables_get" id="smi_high_list_ref2">
-                                                                    <field name="VAR" id="smi_high_list_id">High_List</field>
-                                                                  </block>
-                                                                </value>
-                                                              </block>
-                                                            </value>
-                                                            <value name="B">
-                                                              <block type="math_on_list" id="smi_min_low2">
-                                                                <field name="OP">MIN</field>
-                                                                <value name="LIST">
-                                                                  <block type="variables_get" id="smi_low_list_ref2">
-                                                                    <field name="VAR" id="smi_low_list_id">Low_List</field>
-                                                                  </block>
-                                                                </value>
+                                                          <block type="math_on_list" id="stoch_hh_b">
+                                                            <field name="OP">MAX</field>
+                                                            <value name="LIST">
+                                                              <block type="variables_get" id="stoch_klist_hh_b">
+                                                                <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">S:Klist</field>
                                                               </block>
                                                             </value>
                                                           </block>
                                                         </value>
                                                         <value name="B">
-                                                          <block type="math_number" id="smi_divisor_2b">
-                                                            <field name="NUM">2</field>
+                                                          <block type="math_on_list" id="stoch_ll_b">
+                                                            <field name="OP">MIN</field>
+                                                            <value name="LIST">
+                                                              <block type="variables_get" id="stoch_klist_ll_b">
+                                                                <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">S:Klist</field>
+                                                              </block>
+                                                            </value>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="math_number" id="stoch_100"><field name="NUM">100</field></block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="lists_setIndex" id="stoch_insert_raw_k">
+                                                <comment pinned="false" h="60" w="320">Stochastic: insert raw %K at front of Smooth_K buffer</comment>
+                                                <mutation xmlns="http://www.w3.org/1999/xhtml" at="false"></mutation>
+                                                <field name="MODE">INSERT</field>
+                                                <field name="WHERE">FIRST</field>
+                                                <value name="LIST">
+                                                  <block type="variables_get" id="stoch_smk_ins">
+                                                    <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">Smooth_K</field>
+                                                  </block>
+                                                </value>
+                                                <value name="TO">
+                                                  <block type="variables_get" id="stoch_raw_ins">
+                                                    <field name="VAR" id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </statement>
+                                        <next>
+                                          <!-- Block 3: S:K = SMA(Smooth_K), insert to Smooth_D -->
+                                          <block type="controls_if" id="stoch_sk_guard">
+                                            <comment pinned="false" h="60" w="320">Stochastic: S:K = SMA(Smooth_K) when buffer has enough entries</comment>
+                                            <value name="IF0">
+                                              <block type="logic_compare" id="stoch_sk_len_cmp">
+                                                <field name="OP">GTE</field>
+                                                <value name="A">
+                                                  <block type="lists_length" id="stoch_smk_len">
+                                                    <value name="VALUE">
+                                                      <block type="variables_get" id="stoch_sk_len">
+                                                        <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">Smooth_K</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="variables_get" id="stoch_smk_cfg">
+                                                    <field name="VAR" id="=9}ul6mT4]itI?M{oK3;">_smoothK</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <statement name="DO0">
+                                              <block type="variables_set" id="stoch_sk_set">
+                                                <comment pinned="false" h="60" w="320">Stochastic: S:K = SMA(_smoothK) of raw %K values</comment>
+                                                <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">S:K</field>
+                                                <value name="VALUE">
+                                                  <block type="math_on_list" id="stoch_sk_avg">
+                                                    <field name="OP">AVERAGE</field>
+                                                    <value name="LIST">
+                                                      <block type="variables_get" id="stoch_smk_avg">
+                                                        <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">Smooth_K</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <next>
+                                                  <block type="lists_setIndex" id="stoch_insert_sk">
+                                                    <comment pinned="false" h="60" w="320">Stochastic: insert S:K at front of Smooth_D buffer</comment>
+                                                    <mutation xmlns="http://www.w3.org/1999/xhtml" at="false"></mutation>
+                                                    <field name="MODE">INSERT</field>
+                                                    <field name="WHERE">FIRST</field>
+                                                    <value name="LIST">
+                                                      <block type="variables_get" id="stoch_smd_ins">
+                                                        <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</field>
+                                                      </block>
+                                                    </value>
+                                                    <value name="TO">
+                                                      <block type="variables_get" id="stoch_sk_ins">
+                                                        <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">S:K</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </statement>
+                                            <next>
+                                              <!-- Block 4: S:D = SMA(Smooth_D), SMI_Slope, notify, SMI_Prior -->
+                                              <block type="controls_if" id="stoch_sd_guard">
+                                                <comment pinned="false" h="60" w="320">Stochastic: S:D = SMA(Smooth_D) when buffer has enough entries</comment>
+                                                <value name="IF0">
+                                                  <block type="logic_compare" id="stoch_sd_len_cmp">
+                                                    <field name="OP">GTE</field>
+                                                    <value name="A">
+                                                      <block type="lists_length" id="stoch_smd_len">
+                                                        <value name="VALUE">
+                                                          <block type="variables_get" id="stoch_sd_len">
+                                                            <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                    <value name="B">
+                                                      <block type="variables_get" id="stoch_smd_cfg">
+                                                        <field name="VAR" id="smi_divisor_id">_smoothD</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <statement name="DO0">
+                                                  <block type="variables_set" id="stoch_sd_set">
+                                                    <comment pinned="false" h="60" w="320">Stochastic: S:D = SMA(_smoothD) of S:K values. Always in [0..100].</comment>
+                                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">S:D</field>
+                                                    <value name="VALUE">
+                                                      <block type="math_on_list" id="stoch_sd_avg">
+                                                        <field name="OP">AVERAGE</field>
+                                                        <value name="LIST">
+                                                          <block type="variables_get" id="stoch_smd_avg">
+                                                            <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</field>
                                                           </block>
                                                         </value>
                                                       </block>
                                                     </value>
                                                     <next>
-                                                      <block type="variables_set" id="0}RZ3J9~2yIsaJ=L5Y31">
-                                                        <field name="VAR" id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</field>
+                                                      <block type="variables_set" id="stoch_slope_set">
+                                                        <comment pinned="false" h="80" w="320">Stochastic: SMI_Slope = |S:K - S:D| (K-D spread, used in CALL/PUT conditions)</comment>
+                                                        <field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field>
                                                         <value name="VALUE">
-                                                          <block type="math_arithmetic" id="smi_raw_mul100">
-                                                            <field name="OP">MULTIPLY</field>
-                                                            <value name="A">
-                                                              <block type="math_arithmetic" id="smi_raw_div">
-                                                                <field name="OP">DIVIDE</field>
+                                                          <block type="math_single" id="stoch_abs_slope">
+                                                            <field name="OP">ABS</field>
+                                                            <value name="NUM">
+                                                              <shadow type="math_number" id="stoch_abs_shd"><field name="NUM">0</field></shadow>
+                                                              <block type="math_arithmetic" id="stoch_sk_sd">
+                                                                <field name="OP">MINUS</field>
                                                                 <value name="A">
-                                                                  <block type="math_arithmetic" id="4bMuFW8ey58|$A{rj2gT">
-                                                                    <field name="OP">MINUS</field>
-                                                                    <value name="A">
-                                                                      <shadow type="math_number" id="%7,r)1/(Jk0+P[K@H+F:">
-                                                                        <field name="NUM">1</field>
-                                                                      </shadow>
-                                                                      <block type="tick" id="-yY=PiZ~j7k+9}z6w1wg"></block>
-                                                                    </value>
-                                                                    <value name="B">
-                                                                      <shadow type="math_number" id=":F0g^$-bw=K#QY!QCu^C">
-                                                                        <field name="NUM">1</field>
-                                                                      </shadow>
-                                                                      <block type="variables_get" id="mp.Z25*nyOvQN$/B]VaN">
-                                                                        <field name="VAR" id="=9}ul6mT4]itI?M{oK3;">Midpoint</field>
-                                                                      </block>
-                                                                    </value>
+                                                                  <shadow type="math_number" id="stoch_sk_shd"><field name="NUM">1</field></shadow>
+                                                                  <block type="variables_get" id="stoch_sk_slope">
+                                                                    <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">S:K</field>
                                                                   </block>
                                                                 </value>
                                                                 <value name="B">
-                                                                  <block type="variables_get" id="smi_divisor_ref">
-                                                                    <field name="VAR" id="smi_divisor_id">Divisor</field>
+                                                                  <shadow type="math_number" id="stoch_sd_shd"><field name="NUM">1</field></shadow>
+                                                                  <block type="variables_get" id="stoch_sd_slope">
+                                                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">S:D</field>
                                                                   </block>
                                                                 </value>
-                                                              </block>
-                                                            </value>
-                                                            <value name="B">
-                                                              <block type="math_number" id="smi_raw_100">
-                                                                <field name="NUM">100</field>
                                                               </block>
                                                             </value>
                                                           </block>
                                                         </value>
                                                         <next>
-                                                          <block type="lists_setIndex" id="v(+7g()2wG@m/V4gk2$#">
-                                                            <mutation xmlns="http://www.w3.org/1999/xhtml" at="false"></mutation>
-                                                            <field name="MODE">INSERT</field>
-                                                            <field name="WHERE">FIRST</field>
-                                                            <value name="LIST">
-                                                              <block type="variables_get" id="mLfA4=NTq:taY=?0]VXc">
-                                                                <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                              </block>
-                                                            </value>
-                                                            <value name="TO">
-                                                              <block type="variables_get" id="5=tu@Jk8GYfwz=@Oq5D(">
-                                                                <field name="VAR" id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</field>
+                                                          <block type="notify" id="zyUm)LRBZ/cP!/:HpT^S">
+                                                            <comment pinned="false" h="80" w="320">Step 1: Notify with SMI_Slope = |S:K - S:D|</comment>
+                                                            <field name="NOTIFICATION_TYPE">success</field>
+                                                            <field name="NOTIFICATION_SOUND">silent</field>
+                                                            <value name="MESSAGE">
+                                                              <shadow type="text" id="stoch_slope_text"><field name="TEXT">Stoch K-D</field></shadow>
+                                                              <block type="variables_get" id="stoch_slope_notify">
+                                                                <field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field>
                                                               </block>
                                                             </value>
                                                             <next>
-                                                              <block type="controls_if" id="smi_data_length_guard">
-                                                                <value name="IF0">
-                                                                  <block type="logic_compare" id="smi_data_length_compare">
-                                                                    <field name="OP">GTE</field>
-                                                                    <value name="A">
-                                                                      <block type="lists_length" id="smi_data_length_block">
-                                                                        <value name="VALUE">
-                                                                          <block type="variables_get" id="smi_data_length_var">
-                                                                            <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                                          </block>
-                                                                        </value>
-                                                                      </block>
-                                                                    </value>
-                                                                    <value name="B">
-                                                                      <block type="math_number" id="smi_data_min_period">
-                                                                        <field name="NUM">3</field>
-                                                                      </block>
-                                                                    </value>
+                                                              <block type="variables_set" id="miQi_,.Ov74t8-kR#6?j">
+                                                                <comment pinned="false" h="80" w="320">Step 2: SMI_Prior = S:D after notify</comment>
+                                                                <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</field>
+                                                                <value name="VALUE">
+                                                                  <block type="variables_get" id="stoch_sd_prior">
+                                                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">S:D</field>
                                                                   </block>
                                                                 </value>
-                                                                <statement name="DO0">
-                                                                  <block type="ema_statement" id="7Q299r/`gADH4_/!ck]q">
-                                                                    <field name="VARIABLE" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
-                                                                    <statement name="STATEMENT">
-                                                                      <block type="input_list" id="UvAAi8f+L2b@FH_(DyL/" deletable="false" movable="false">
-                                                                        <value name="INPUT_LIST">
-                                                                          <block type="variables_get" id="k`SsIEqv}FX]=^lRyb3}">
-                                                                            <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                                          </block>
-                                                                        </value>
-                                                                        <next>
-                                                                          <block type="period" id=":_0|dxo@9qC58pk]v0au" deletable="false" movable="false">
-                                                                            <value name="PERIOD">
-                                                                              <shadow type="math_number" id="]Bj7ZLDA(YS]=SHwO{Z|">
-                                                                                <field name="NUM">3</field>
-                                                                              </shadow>
-                                                                            </value>
-                                                                          </block>
-                                                                        </next>
-                                                                      </block>
-                                                                    </statement>
-                                                                    <next>
-                                                                      <block type="lists_setIndex" id="6QjG36$|u4N#B$?u`Zks">
-                                                                        <mutation xmlns="http://www.w3.org/1999/xhtml" at="false"></mutation>
-                                                                        <field name="MODE">INSERT</field>
-                                                                        <field name="WHERE">FIRST</field>
-                                                                        <value name="LIST">
-                                                                          <block type="variables_get" id="hZSry(GW8i/C1Z2|Pa#6">
-                                                                            <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                                          </block>
-                                                                        </value>
-                                                                        <value name="TO">
-                                                                          <block type="variables_get" id="AM)ljrV/H=]OqTaAf[01">
-                                                                            <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
-                                                                          </block>
-                                                                        </value>
-                                                                        <next>
-                                                                          <block type="controls_if" id="smi_smoothed_length_guard">
-                                                                            <value name="IF0">
-                                                                              <block type="logic_compare" id="smi_smoothed_length_compare">
-                                                                                <field name="OP">GTE</field>
-                                                                                <value name="A">
-                                                                                  <block type="lists_length" id="smi_smoothed_length_block">
-                                                                                    <value name="VALUE">
-                                                                                      <block type="variables_get" id="smi_smoothed_length_var">
-                                                                                        <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                                                      </block>
-                                                                                    </value>
-                                                                                  </block>
-                                                                                </value>
-                                                                                <value name="B">
-                                                                                  <block type="math_number" id="smi_smoothed_min_period">
-                                                                                    <field name="NUM">3</field>
-                                                                                  </block>
-                                                                                </value>
-                                                                              </block>
-                                                                            </value>
-                                                                            <statement name="DO0">
-                                                                              <block type="ema_statement" id=",@t@h]([KRa+dXAqxx^D">
-                                                                                <field name="VARIABLE" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                                <statement name="STATEMENT">
-                                                                                  <block type="input_list" id="J7|g9U_W~+w}`?GP:.9R" deletable="false" movable="false">
-                                                                                    <value name="INPUT_LIST">
-                                                                                      <block type="variables_get" id="--N7MVV1*F]qVNXu]y7V">
-                                                                                        <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                                                      </block>
-                                                                                    </value>
-                                                                                    <next>
-                                                                                      <block type="period" id="M?:M3z9UwO{tR68HG5c," deletable="false" movable="false">
-                                                                                        <value name="PERIOD">
-                                                                                          <shadow type="math_number" id="HmcbrrzBXx}T!V]AL@GN">
-                                                                                            <field name="NUM">3</field>
-                                                                                          </shadow>
-                                                                                        </value>
-                                                                                      </block>
-                                                                                    </next>
-                                                                                  </block>
-                                                                                </statement>
-                                                                                <next>
-                                                                                  <block type="variables_set" id="GCBmoXWq?,Pdw*j*]v`w">
-                                                                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                                    <value name="VALUE">
-                                                                                      <block type="math_arithmetic" id="{m=1m)?4L,pYyV(U5KQ2">
-                                                                                        <field name="OP">MULTIPLY</field>
-                                                                                        <value name="A">
-                                                                                          <shadow type="math_number" id="@%V{:]*ET_`%2iiN6D`g">
-                                                                                            <field name="NUM">1</field>
-                                                                                          </shadow>
-                                                                                          <block type="variables_get" id="}qZay^5_N-qd?haaaguP">
-                                                                                            <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                                          </block>
-                                                                                        </value>
-                                                                                        <value name="B">
-                                                                                          <shadow type="math_number" id="-@2ZB!bkA[S`f?yjUTNE">
-                                                                                            <field name="NUM">100</field>
-                                                                                          </shadow>
-                                                                                        </value>
-                                                                                      </block>
-                                                                                    </value>
-                                                                                    <next>
-                                                                                      <block type="variables_set" id="sC+C29f;6?JN1tJYz9y?">
-                                                                                        <field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field>
-                                                                                        <value name="VALUE">
-                                                                                          <block type="math_single" id="UB6?%;/=6YP*M%0y/@YH">
-                                                                                            <field name="OP">ABS</field>
-                                                                                            <value name="NUM">
-                                                                                              <shadow type="math_number" id="cf]r$d14gU8nB,^LY;Bi">
-                                                                                                <field name="NUM">9</field>
-                                                                                              </shadow>
-                                                                                              <block type="math_arithmetic" id="vryiBCJy^-w/g/s?W!aq">
-                                                                                                <field name="OP">MINUS</field>
-                                                                                                <value name="A">
-                                                                                                  <shadow type="math_number" id="dLR,`L8VH9gm/`0Ih|m;">
-                                                                                                    <field name="NUM">1</field>
-                                                                                                  </shadow>
-                                                                                                  <block type="variables_get" id="Mq1tC$=hY@*/qoWy|BCa">
-                                                                                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                                                  </block>
-                                                                                                </value>
-                                                                                                <value name="B">
-                                                                                                  <shadow type="math_number" id="e_AkUB2e03QE7ayZvP0y">
-                                                                                                    <field name="NUM">1</field>
-                                                                                                  </shadow>
-                                                                                                  <block type="variables_get" id="@B,_h)9vZrA_5rmRQ{R5">
-                                                                                                    <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</field>
-                                                                                                  </block>
-                                                                                                </value>
-                                                                                              </block>
-                                                                                            </value>
-                                                                                          </block>
-                                                                                        </value>
-                                                                                        <next>
-                                                                                          <!-- CORRECT ORDER: notify SMI_Slope first, THEN update SMI_Prior = SMI_Final.
-                                                                                               This guarantees SMI_Prior always holds the previous tick's SMI_Final
-                                                                                               so SMI_Slope = abs(SMI_Final - SMI_Prior) reflects the true tick-to-tick change. -->
-                                                                                          <block type="notify" id="zyUm)LRBZ/cP!/:HpT^S">
-                                                                                            <comment pinned="false" h="80" w="320">Step 1: Notify with SMI_Slope (old SMI_Prior vs new SMI_Final = correct diff).</comment>
-                                                                                            <field name="NOTIFICATION_TYPE">success</field>
-                                                                                            <field name="NOTIFICATION_SOUND">silent</field>
-                                                                                            <value name="MESSAGE">
-                                                                                              <shadow type="text" id="SQXh6;F7t+{Fy7YFI*9z">
-                                                                                                <field name="TEXT">abc</field>
-                                                                                              </shadow>
-                                                                                              <block type="variables_get" id="nR,t_`jNY.)(V%$6NZ)U">
-                                                                                                <field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field>
-                                                                                              </block>
-                                                                                            </value>
-                                                                                            <next>
-                                                                                              <!-- Step 2: Update SMI_Prior AFTER notify so next tick's slope is correct. -->
-                                                                                              <block type="variables_set" id="miQi_,.Ov74t8-kR#6?j">
-                                                                                                <comment pinned="false" h="80" w="320">Step 2: SMI_Prior = SMI_Final AFTER notify. Preserves previous value for next tick's slope.</comment>
-                                                                                                <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</field>
-                                                                                                <value name="VALUE">
-                                                                                                  <block type="variables_get" id="jQeF4Xmn%$pBQIHATR8H">
-                                                                                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                                                  </block>
-                                                                                                </value>
-                                                                                              </block>
-                                                                                            </next>
-                                                                                          </block>
-                                                                                        </next>
-                                                                                      </block>
-                                                                                    </next>
-                                                                                  </block>
-                                                                                </next>
-                                                                              </block>
-                                                                            </statement>
-                                                                            <next>
-                                                                              <block type="notify" id=".k.ep4V,88ajkDau#|u%" disabled="true">
-                                                                                <field name="NOTIFICATION_TYPE">info</field>
-                                                                                <field name="NOTIFICATION_SOUND">silent</field>
-                                                                                <value name="MESSAGE">
-                                                                                  <shadow type="text" id="SQXh6;F7t+{Fy7YFI*9z">
-                                                                                    <field name="TEXT">abc</field>
-                                                                                  </shadow>
-                                                                                  <block type="variables_get" id="sZsixF!HSD*qS12gY70o">
-                                                                                    <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
-                                                                                  </block>
-                                                                                </value>
-                                                                              </block>
-                                                                            </next>
-                                                                          </block>
-                                                                        </next>
-                                                                      </block>
-                                                                    </next>
+                                                              </block>
+                                                            </next>
+                                                          </block>
+                                                        </next>
+                                                      </block>
+                                                    </next>
+                                                  </block>
+                                                </statement>
+                                                <next>
+                                                  <!-- Block 5: Trim Smooth_D -->
+                                                  <block type="controls_if" id="stoch_trim_d">
+                                                    <comment pinned="false" h="60" w="320">Stochastic: keep Smooth_D bounded to _smoothD entries</comment>
+                                                    <value name="IF0">
+                                                      <block type="logic_compare" id="stoch_trim_d_cmp">
+                                                        <field name="OP">GT</field>
+                                                        <value name="A">
+                                                          <block type="lists_length" id="stoch_smd_trim_len">
+                                                            <value name="VALUE">
+                                                              <block type="variables_get" id="stoch_smd_trim">
+                                                                <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</field>
+                                                              </block>
+                                                            </value>
+                                                          </block>
+                                                        </value>
+                                                        <value name="B">
+                                                          <block type="variables_get" id="stoch_trim_d_cfg">
+                                                            <field name="VAR" id="smi_divisor_id">_smoothD</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                    <statement name="DO0">
+                                                      <block type="lists_getIndex" id="stoch_trim_d_op">
+                                                        <mutation xmlns="http://www.w3.org/1999/xhtml" statement="true" at="false"></mutation>
+                                                        <field name="MODE">REMOVE</field>
+                                                        <field name="WHERE">LAST</field>
+                                                        <value name="VALUE">
+                                                          <block type="variables_get" id="stoch_trim_d_list">
+                                                            <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </statement>
+                                                    <next>
+                                                      <!-- Block 6: Trim Smooth_K -->
+                                                      <block type="controls_if" id="stoch_trim_k">
+                                                        <comment pinned="false" h="60" w="320">Stochastic: keep Smooth_K bounded to _smoothK entries</comment>
+                                                        <value name="IF0">
+                                                          <block type="logic_compare" id="stoch_trim_k_cmp">
+                                                            <field name="OP">GT</field>
+                                                            <value name="A">
+                                                              <block type="lists_length" id="stoch_smk_trim_len">
+                                                                <value name="VALUE">
+                                                                  <block type="variables_get" id="stoch_smk_trim">
+                                                                    <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">Smooth_K</field>
                                                                   </block>
-                                                                </statement>
+                                                                </value>
+                                                              </block>
+                                                            </value>
+                                                            <value name="B">
+                                                              <block type="variables_get" id="stoch_trim_k_cfg">
+                                                                <field name="VAR" id="=9}ul6mT4]itI?M{oK3;">_smoothK</field>
+                                                              </block>
+                                                            </value>
+                                                          </block>
+                                                        </value>
+                                                        <statement name="DO0">
+                                                          <block type="lists_getIndex" id="stoch_trim_k_op">
+                                                            <mutation xmlns="http://www.w3.org/1999/xhtml" statement="true" at="false"></mutation>
+                                                            <field name="MODE">REMOVE</field>
+                                                            <field name="WHERE">LAST</field>
+                                                            <value name="VALUE">
+                                                              <block type="variables_get" id="stoch_trim_k_list">
+                                                                <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">Smooth_K</field>
+                                                              </block>
+                                                            </value>
+                                                          </block>
+                                                        </statement>
+                                                        <next>
+                                                          <!-- Block 7: debug notify S:K (disabled) -->
+                                                          <block type="notify" id="stoch_dbg_sk" disabled="true">
+                                                            <field name="NOTIFICATION_TYPE">info</field>
+                                                            <field name="NOTIFICATION_SOUND">silent</field>
+                                                            <value name="MESSAGE">
+                                                              <shadow type="text" id="stoch_dbg_sk_t"><field name="TEXT">S:K</field></shadow>
+                                                              <block type="variables_get" id="stoch_dbg_sk_r">
+                                                                <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">S:K</field>
+                                                              </block>
+                                                            </value>
+                                                            <next>
+                                                              <!-- Block 8: debug notify S:D (disabled) -->
+                                                              <block type="notify" id="stoch_dbg_sd" disabled="true">
+                                                                <field name="NOTIFICATION_TYPE">info</field>
+                                                                <field name="NOTIFICATION_SOUND">silent</field>
+                                                                <value name="MESSAGE">
+                                                                  <shadow type="text" id="stoch_dbg_sd_t"><field name="TEXT">S:D</field></shadow>
+                                                                  <block type="variables_get" id="stoch_dbg_sd_r">
+                                                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">S:D</field>
+                                                                  </block>
+                                                                </value>
                                                                 <next>
-                                                                  <block type="controls_if" id="I3q@ZM)$jpfX4QlF9QOS">
-                                                                    <value name="IF0">
-                                                                      <block type="logic_compare" id="sad-EA4OoagP[|h}@4Vy">
-                                                                        <field name="OP">GT</field>
-                                                                        <value name="A">
-                                                                          <block type="lists_length" id="f,rj.Q[H^zdDG#,cY]+W">
-                                                                            <value name="VALUE">
-                                                                              <block type="variables_get" id="6*Tu:_*DO[(`Z`V=Kqs:">
-                                                                                <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                                              </block>
-                                                                            </value>
-                                                                          </block>
-                                                                        </value>
-                                                                        <value name="B">
-                                                                          <block type="math_number" id="H7.rHK5hLHgDC{]^$G{!">
-                                                                            <field name="NUM">20</field>
-                                                                          </block>
-                                                                        </value>
+                                                                  <!-- Block 9: debug notify SMI_Slope (disabled) -->
+                                                                  <block type="notify" id=".k.ep4V,88ajkDau#|u%" disabled="true">
+                                                                    <field name="NOTIFICATION_TYPE">warn</field>
+                                                                    <field name="NOTIFICATION_SOUND">silent</field>
+                                                                    <value name="MESSAGE">
+                                                                      <shadow type="text" id="stoch_dbg_sl_t"><field name="TEXT">SMI_Slope</field></shadow>
+                                                                      <block type="variables_get" id="stoch_dbg_sl_r">
+                                                                        <field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field>
                                                                       </block>
                                                                     </value>
-                                                                    <statement name="DO0">
-                                                                      <block type="lists_getIndex" id="LGC)zjFtv34zpnHR9JmJ">
-                                                                        <mutation xmlns="http://www.w3.org/1999/xhtml" statement="true" at="false"></mutation>
-                                                                        <field name="MODE">REMOVE</field>
-                                                                        <field name="WHERE">LAST</field>
-                                                                        <value name="VALUE">
-                                                                          <block type="variables_get" id="#251,?4dbuMv{t4qjcZq">
-                                                                            <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                                          </block>
-                                                                        </value>
-                                                                      </block>
-                                                                    </statement>
                                                                     <next>
-                                                                      <block type="controls_if" id="jvV,EuK62WbM-|x74mv!">
+                                                                      <!-- Block 10: placeholder controls_if (maintains chain depth for bb_statement) -->
+                                                                      <block type="controls_if" id="I3q@ZM)$jpfX4QlF9QOS">
+                                                                        <comment pinned="false" h="60" w="320">Block 10: depth placeholder - extra Smooth_D trim guard</comment>
                                                                         <value name="IF0">
-                                                                          <block type="logic_compare" id="ya)3WTID{WuP^hbMZ=X|">
+                                                                          <block type="logic_compare" id="stoch_b10_cond">
                                                                             <field name="OP">GT</field>
                                                                             <value name="A">
-                                                                              <block type="lists_length" id="N$|5[`Y9T%@nh4%a5HVY">
+                                                                              <block type="lists_length" id="stoch_b10_len">
                                                                                 <value name="VALUE">
-                                                                                  <block type="variables_get" id="?g~Ryz[p2WgK3xlv`b4a">
-                                                                                    <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
+                                                                                  <block type="variables_get" id="stoch_b10_ref">
+                                                                                    <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</field>
                                                                                   </block>
                                                                                 </value>
                                                                               </block>
                                                                             </value>
                                                                             <value name="B">
-                                                                              <block type="math_number" id=";U3T3{r;Hg_0nN;Y9T%Y">
-                                                                                <field name="NUM">20</field>
-                                                                              </block>
+                                                                              <block type="math_number" id="stoch_b10_20"><field name="NUM">20</field></block>
                                                                             </value>
                                                                           </block>
                                                                         </value>
                                                                         <statement name="DO0">
-                                                                          <block type="lists_getIndex" id="nO,Sabk8,2:Aiib`ejab">
+                                                                          <block type="lists_getIndex" id="LGC)zjFtv34zpnHR9JmJ">
                                                                             <mutation xmlns="http://www.w3.org/1999/xhtml" statement="true" at="false"></mutation>
                                                                             <field name="MODE">REMOVE</field>
                                                                             <field name="WHERE">LAST</field>
                                                                             <value name="VALUE">
-                                                                              <block type="variables_get" id="r,v^uA;/%^+%|^A7QWJE">
-                                                                                <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
+                                                                              <block type="variables_get" id="#251,?4dbuMv{t4qjcZq">
+                                                                                <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">Smooth_D</field>
                                                                               </block>
                                                                             </value>
                                                                           </block>
-                                                                        </statement>
-                                                                        <next>
+                                                                        </statement>                                                                        <next>
                                                                           <block type="bb_statement" id="set_bb_upper">
                                                                             <field name="VARIABLE" id="v_bb_upper">upper_band</field>
                                                                             <field name="BBRESULT_LIST">1</field>
@@ -2235,7 +2207,7 @@
                                                                                                                                                                             <field name="TEXT">abc</field>
                                                                                                                                                                           </shadow>
                                                                                                                                                                           <block type="variables_get" id="hRml_~vA}2S`y/bWX)[X">
-                                                                                                                                                                            <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
+                                                                                                                                                                            <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">S:D</field>
                                                                                                                                                                           </block>
                                                                                                                                                                         </value>
                                                                                                                                                                         <next>
