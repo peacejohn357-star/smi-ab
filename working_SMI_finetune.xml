@@ -1,4 +1,5 @@
-<xml xmlns="https://developers.google.com/blockly/xml" is_dbot="true" collection="false">
+<?xml version='1.0' encoding='utf-8'?>
+<xml xmlns="https://developers.google.com/blockly/xml" xmlns:html="http://www.w3.org/1999/xhtml" is_dbot="true" collection="false">
   <variables>
     <variable id="v_base_stake">base_stake</variable>
     <variable id="v_current_stake">current_stake</variable>
@@ -6,20 +7,20 @@
     <variable id="v_cooldown_counter">cooldown_counter</variable>
     <variable id="v_multiplier">martingale_multiplier</variable>
     <variable id="v_entry_side">entry_side</variable>
-    <variable id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</variable>
+    <variable id="wyH7=]DV[E#j!QdPjJly">D_EMA2</variable>
     <variable id="v_entry_hist">entry_hist</variable>
-    <variable id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</variable>
+    <variable id="k0U[iGvT9WD_-b|IMFqW">R_EMA1</variable>
     <variable id="$qh|nR[O`mjD`=P@QWDx">last_histogram</variable>
     <variable id="v_entry_hist_prev">entry_hist_prev</variable>
     <variable id="[6Ww!y#PNM1y,5,I$jlp"> candles_1m</variable>
-    <variable id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</variable>
+    <variable id="_0-cW.9/4PpYxKm7WZd3">D_EMA1</variable>
     <variable id="v_prev_hist">prev_histogram</variable>
     <variable id="v_entry_line">entry_line</variable>
-    <variable id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</variable>
+    <variable id="SsOL)9k:n-YE{IyR]r-z">SMI_Value</variable>
     <variable id="#j4xss#FZJL1n}fX@6^_">last_macd_line</variable>
     <variable id="v_entry_sig">entry_sig</variable>
-    <variable id="Z~!~fr7w+ZxI?,0`2FC;">Fast_List</variable>
-    <variable id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</variable>
+    <variable id="Z~!~fr7w+ZxI?,0`2FC;">Snapshot_List</variable>
+    <variable id="?m3=qi+=vGv+,$THi-j6">SMI_Signal</variable>
     <variable id="+3WHuxNmMx}45=zST`-Z">last_macd_signal</variable>
     <variable id="v_entry_spread">entry_spread</variable>
     <variable id="=9}ul6mT4]itI?M{oK3;">Midpoint</variable>
@@ -46,7 +47,7 @@
     <variable id="v_bb_lower">lower_band</variable>
     <variable id="hOY^zrf8mH{32M.y3sVB">ema_1min</variable>
     <variable id="v_entry_bb_w_prev">entry_bb_w_prev</variable>
-  </variables>
+  <variable id="v_r_ema2">R_EMA2</variable><variable id="v_hh">HH</variable><variable id="v_ll">LL</variable><variable id="v_range_r">Range_R</variable></variables>
   <block type="trade_definition" id="td_main" deletable="false" x="0" y="60">
     <statement name="TRADE_OPTIONS">
       <block type="trade_definition_market" id="td_market" deletable="false" movable="false">
@@ -114,14 +115,10 @@
                       </block>
                     </value>
                     <next>
-                      <block type="lists_create_with" id="T)OIZk;;2)p/(~zl#yv0">
-                        <field name="VARIABLE" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                        <next>
-                          <block type="lists_create_with" id="p0=1OChpr*$PAx]m2_MS">
-                            <field name="VARIABLE" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                            <next>
+                      <block type="variables_set" id="init_d_ema2"><field name="VAR" id="wyH7=]DV[E#j!QdPjJly">D_EMA2</field><value name="VALUE"><block type="math_number" id="init_d_ema2_val"><field name="NUM">0</field></block></value><next>
+                          <block type="variables_set" id="init_r_ema1"><field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">R_EMA1</field><value name="VALUE"><block type="math_number" id="init_r_ema1_val"><field name="NUM">0</field></block></value><next>
                               <block type="variables_set" id=")ry@ee0o:S7T[OVL+qNz">
-                                <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
+                                <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">D_EMA1</field>
                                 <value name="VALUE">
                                   <block type="math_number" id="`mH|t+Wz5]JLl%*h_?(E">
                                     <field name="NUM">0</field>
@@ -129,7 +126,7 @@
                                 </value>
                                 <next>
                                   <block type="variables_set" id="MfsRq)BL/D:c=,4]HkFR">
-                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
+                                    <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Value</field>
                                     <value name="VALUE">
                                       <block type="math_number" id="~5/5(5.YY5E@ayZtgwoM">
                                         <field name="NUM">0</field>
@@ -137,7 +134,7 @@
                                     </value>
                                     <next>
                                       <block type="variables_set" id="y.#{3KVBFU-l((*/:u50">
-                                        <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</field>
+                                        <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Signal</field>
                                         <value name="VALUE">
                                           <block type="math_number" id="S#{pi+bWzF.F9_NcK0@1">
                                             <field name="NUM">0</field>
@@ -151,8 +148,7 @@
                                                 <field name="NUM">0</field>
                                               </block>
                                             </value>
-                                            <next>
-                                              <block type="variables_set" id="init_tick_warmup">
+                                            <next><block type="variables_set" id="init_r_ema2"><field name="VAR" id="v_r_ema2">R_EMA2</field><value name="VALUE"><block type="math_number" id="init_r_ema2_val"><field name="NUM">0</field></block></value><next><block type="variables_set" id="init_hh"><field name="VAR" id="v_hh">HH</field><value name="VALUE"><block type="math_number" id="init_hh_val"><field name="NUM">0</field></block></value><next><block type="variables_set" id="init_ll"><field name="VAR" id="v_ll">LL</field><value name="VALUE"><block type="math_number" id="init_ll_val"><field name="NUM">0</field></block></value><next><block type="variables_set" id="init_range_r"><field name="VAR" id="v_range_r">Range_R</field><value name="VALUE"><block type="math_number" id="init_range_r_val"><field name="NUM">0</field></block></value><next><block type="variables_set" id="init_tick_warmup">
                                                 <field name="VAR" id="v_tick_warmup">tick_warmup</field>
                                                 <value name="VALUE">
                                                   <block type="math_number" id="init_tick_warmup_val">
@@ -340,8 +336,7 @@
                                                   </block>
                                                 </next>
                                               </block>
-                                            </next>
-                                          </block>
+                                            </next></block></next></block></next></block></next></block></next></block>
                                         </next>
                                       </block>
                                     </next>
@@ -349,10 +344,8 @@
                                 </next>
                               </block>
                             </next>
-                          </block>
-                        </next>
-                      </block>
-                    </next>
+                          </block></next>
+                      </block></next>
                   </block>
                 </next>
               </block>
@@ -363,7 +356,7 @@
     </statement>
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="trade_opts">
-        <mutation xmlns="http://www.w3.org/1999/xhtml" has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
+        <html:mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></html:mutation>
         <field name="DURATIONTYPE_LIST">t</field>
         <value name="DURATION">
           <shadow type="math_number_positive" id="dur_val">
@@ -390,7 +383,7 @@
   <block type="after_purchase" id="after_block" x="714" y="292">
     <statement name="AFTERPURCHASE_STACK">
       <block type="controls_if" id="after_if">
-        <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
+        <html:mutation else="1"></html:mutation>
         <value name="IF0">
           <block type="contract_check_result" id="after_win_check">
             <field name="CHECK_RESULT">win</field>
@@ -1107,7 +1100,7 @@
   <block type="before_purchase" id="before_block" deletable="false" x="0" y="2156">
     <statement name="BEFOREPURCHASE_STACK">
       <block type="controls_if" id="cooldown_check" disabled="true">
-        <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
+        <html:mutation else="1"></html:mutation>
         <value name="IF0">
           <block type="logic_compare" id="cooldown_check_gt">
             <field name="OP">GT</field>
@@ -1250,343 +1243,7 @@
                                   </block>
                                 </value>
                                 <next>
-                                  <block type="variables_set" id="t(3kQ6QiO`IEV!ukBM}6">
-                                    <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">Fast_List</field>
-                                    <value name="VALUE">
-                                      <block type="lists_getSublist" id="}I3uxLuQYYUOHhJ:$@Y(">
-                                        <mutation xmlns="http://www.w3.org/1999/xhtml" at1="true" at2="false"></mutation>
-                                        <field name="WHERE1">FROM_END</field>
-                                        <field name="WHERE2">LAST</field>
-                                        <value name="LIST">
-                                          <block type="ticks" id="[QUy/cTnn0g#QVqDeh55"></block>
-                                        </value>
-                                        <value name="AT1">
-                                          <block type="math_number" id="g86j-1ZQ)QOmk86V08UO">
-                                            <field name="NUM">10</field>
-                                          </block>
-                                        </value>
-                                      </block>
-                                    </value>
-                                    <next>
-                                      <block type="variables_set" id=")i)Z%9bU@?0w`$/=c=jY">
-                                        <field name="VAR" id="=9}ul6mT4]itI?M{oK3;">Midpoint</field>
-                                        <value name="VALUE">
-                                          <block type="math_on_list" id="!Afrotq31Rlzzn|)QuKH">
-                                            <field name="OP">AVERAGE</field>
-                                            <value name="LIST">
-                                              <block type="variables_get" id="AY;-VGC9?Z(+L%3bwbLJ">
-                                                <field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">Fast_List</field>
-                                              </block>
-                                            </value>
-                                          </block>
-                                        </value>
-                                        <next>
-                                          <block type="variables_set" id="0}RZ3J9~2yIsaJ=L5Y31">
-                                            <field name="VAR" id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</field>
-                                            <value name="VALUE">
-                                              <block type="math_arithmetic" id="4bMuFW8ey58|$A{rj2gT">
-                                                <field name="OP">MINUS</field>
-                                                <value name="A">
-                                                  <shadow type="math_number" id="%7,r)1/(Jk0+P[K@H+F:">
-                                                    <field name="NUM">1</field>
-                                                  </shadow>
-                                                  <block type="tick" id="-yY=PiZ~j7k+9}z6w1wg"></block>
-                                                </value>
-                                                <value name="B">
-                                                  <shadow type="math_number" id=":F0g^$-bw=K#QY!QCu^C">
-                                                    <field name="NUM">1</field>
-                                                  </shadow>
-                                                  <block type="variables_get" id="mp.Z25*nyOvQN$/B]VaN">
-                                                    <field name="VAR" id="=9}ul6mT4]itI?M{oK3;">Midpoint</field>
-                                                  </block>
-                                                </value>
-                                              </block>
-                                            </value>
-                                            <next>
-                                              <block type="lists_setIndex" id="v(+7g()2wG@m/V4gk2$#">
-                                                <mutation xmlns="http://www.w3.org/1999/xhtml" at="false"></mutation>
-                                                <field name="MODE">INSERT</field>
-                                                <field name="WHERE">FIRST</field>
-                                                <value name="LIST">
-                                                  <block type="variables_get" id="mLfA4=NTq:taY=?0]VXc">
-                                                    <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                  </block>
-                                                </value>
-                                                <value name="TO">
-                                                  <block type="variables_get" id="5=tu@Jk8GYfwz=@Oq5D(">
-                                                    <field name="VAR" id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</field>
-                                                  </block>
-                                                </value>
-                                                <next>
-                                                  <block type="controls_if" id="smi_data_length_guard">
-                                                    <value name="IF0">
-                                                      <block type="logic_compare" id="smi_data_length_compare">
-                                                        <field name="OP">GTE</field>
-                                                        <value name="A">
-                                                          <block type="lists_length" id="smi_data_length_block">
-                                                            <value name="VALUE">
-                                                              <block type="variables_get" id="smi_data_length_var">
-                                                                <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                              </block>
-                                                            </value>
-                                                          </block>
-                                                        </value>
-                                                        <value name="B">
-                                                          <block type="math_number" id="smi_data_min_period">
-                                                            <field name="NUM">3</field>
-                                                          </block>
-                                                        </value>
-                                                      </block>
-                                                    </value>
-                                                    <statement name="DO0">
-                                                      <block type="ema_statement" id="7Q299r/`gADH4_/!ck]q">
-                                                        <field name="VARIABLE" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
-                                                        <statement name="STATEMENT">
-                                                          <block type="input_list" id="UvAAi8f+L2b@FH_(DyL/" deletable="false" movable="false">
-                                                            <value name="INPUT_LIST">
-                                                              <block type="variables_get" id="k`SsIEqv}FX]=^lRyb3}">
-                                                                <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                              </block>
-                                                            </value>
-                                                            <next>
-                                                              <block type="period" id=":_0|dxo@9qC58pk]v0au" deletable="false" movable="false">
-                                                                <value name="PERIOD">
-                                                                  <shadow type="math_number" id="]Bj7ZLDA(YS]=SHwO{Z|">
-                                                                    <field name="NUM">3</field>
-                                                                  </shadow>
-                                                                </value>
-                                                              </block>
-                                                            </next>
-                                                          </block>
-                                                        </statement>
-                                                        <next>
-                                                          <block type="lists_setIndex" id="6QjG36$|u4N#B$?u`Zks">
-                                                            <mutation xmlns="http://www.w3.org/1999/xhtml" at="false"></mutation>
-                                                            <field name="MODE">INSERT</field>
-                                                            <field name="WHERE">FIRST</field>
-                                                            <value name="LIST">
-                                                              <block type="variables_get" id="hZSry(GW8i/C1Z2|Pa#6">
-                                                                <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                              </block>
-                                                            </value>
-                                                            <value name="TO">
-                                                              <block type="variables_get" id="AM)ljrV/H=]OqTaAf[01">
-                                                                <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
-                                                              </block>
-                                                            </value>
-                                                            <next>
-                                                              <block type="controls_if" id="smi_smoothed_length_guard">
-                                                                <value name="IF0">
-                                                                  <block type="logic_compare" id="smi_smoothed_length_compare">
-                                                                    <field name="OP">GTE</field>
-                                                                    <value name="A">
-                                                                      <block type="lists_length" id="smi_smoothed_length_block">
-                                                                        <value name="VALUE">
-                                                                          <block type="variables_get" id="smi_smoothed_length_var">
-                                                                            <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                                          </block>
-                                                                        </value>
-                                                                      </block>
-                                                                    </value>
-                                                                    <value name="B">
-                                                                      <block type="math_number" id="smi_smoothed_min_period">
-                                                                        <field name="NUM">3</field>
-                                                                      </block>
-                                                                    </value>
-                                                                  </block>
-                                                                </value>
-                                                                <statement name="DO0">
-                                                                  <block type="ema_statement" id=",@t@h]([KRa+dXAqxx^D">
-                                                                    <field name="VARIABLE" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                    <statement name="STATEMENT">
-                                                                      <block type="input_list" id="J7|g9U_W~+w}`?GP:.9R" deletable="false" movable="false">
-                                                                        <value name="INPUT_LIST">
-                                                                          <block type="variables_get" id="--N7MVV1*F]qVNXu]y7V">
-                                                                            <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                                          </block>
-                                                                        </value>
-                                                                        <next>
-                                                                          <block type="period" id="M?:M3z9UwO{tR68HG5c," deletable="false" movable="false">
-                                                                            <value name="PERIOD">
-                                                                              <shadow type="math_number" id="HmcbrrzBXx}T!V]AL@GN">
-                                                                                <field name="NUM">3</field>
-                                                                              </shadow>
-                                                                            </value>
-                                                                          </block>
-                                                                        </next>
-                                                                      </block>
-                                                                    </statement>
-                                                                    <next>
-                                                                      <block type="variables_set" id="GCBmoXWq?,Pdw*j*]v`w">
-                                                                        <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                        <value name="VALUE">
-                                                                          <block type="math_arithmetic" id="{m=1m)?4L,pYyV(U5KQ2">
-                                                                            <field name="OP">MULTIPLY</field>
-                                                                            <value name="A">
-                                                                              <shadow type="math_number" id="@%V{:]*ET_`%2iiN6D`g">
-                                                                                <field name="NUM">1</field>
-                                                                              </shadow>
-                                                                              <block type="variables_get" id="}qZay^5_N-qd?haaaguP">
-                                                                                <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                              </block>
-                                                                            </value>
-                                                                            <value name="B">
-                                                                              <shadow type="math_number" id="-@2ZB!bkA[S`f?yjUTNE">
-                                                                                <field name="NUM">100</field>
-                                                                              </shadow>
-                                                                            </value>
-                                                                          </block>
-                                                                        </value>
-                                                                        <next>
-                                                                          <block type="variables_set" id="sC+C29f;6?JN1tJYz9y?">
-                                                                            <field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field>
-                                                                            <value name="VALUE">
-                                                                              <block type="math_single" id="UB6?%;/=6YP*M%0y/@YH">
-                                                                                <field name="OP">ABS</field>
-                                                                                <value name="NUM">
-                                                                                  <shadow type="math_number" id="cf]r$d14gU8nB,^LY;Bi">
-                                                                                    <field name="NUM">9</field>
-                                                                                  </shadow>
-                                                                                  <block type="math_arithmetic" id="vryiBCJy^-w/g/s?W!aq">
-                                                                                    <field name="OP">MINUS</field>
-                                                                                    <value name="A">
-                                                                                      <shadow type="math_number" id="dLR,`L8VH9gm/`0Ih|m;">
-                                                                                        <field name="NUM">1</field>
-                                                                                      </shadow>
-                                                                                      <block type="variables_get" id="Mq1tC$=hY@*/qoWy|BCa">
-                                                                                        <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                                      </block>
-                                                                                    </value>
-                                                                                    <value name="B">
-                                                                                      <shadow type="math_number" id="e_AkUB2e03QE7ayZvP0y">
-                                                                                        <field name="NUM">1</field>
-                                                                                      </shadow>
-                                                                                      <block type="variables_get" id="@B,_h)9vZrA_5rmRQ{R5">
-                                                                                        <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</field>
-                                                                                      </block>
-                                                                                    </value>
-                                                                                  </block>
-                                                                                </value>
-                                                                              </block>
-                                                                            </value>
-                                                                            <next>
-                                                                              <block type="notify" id="zyUm)LRBZ/cP!/:HpT^S">
-                                                                                <field name="NOTIFICATION_TYPE">success</field>
-                                                                                <field name="NOTIFICATION_SOUND">silent</field>
-                                                                                <value name="MESSAGE">
-                                                                                  <shadow type="text" id="SQXh6;F7t+{Fy7YFI*9z">
-                                                                                    <field name="TEXT">abc</field>
-                                                                                  </shadow>
-                                                                                  <block type="variables_get" id="nR,t_`jNY.)(V%$6NZ)U">
-                                                                                    <field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field>
-                                                                                  </block>
-                                                                                </value>
-                                                                                <next>
-                                                                                  <block type="variables_set" id="miQi_,.Ov74t8-kR#6?j">
-                                                                                    <field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Prior</field>
-                                                                                    <value name="VALUE">
-                                                                                      <block type="variables_get" id="jQeF4Xmn%$pBQIHATR8H">
-                                                                                        <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
-                                                                                      </block>
-                                                                                    </value>
-                                                                                  </block>
-                                                                                </next>
-                                                                              </block>
-                                                                            </next>
-                                                                          </block>
-                                                                        </next>
-                                                                      </block>
-                                                                    </next>
-                                                                  </block>
-                                                                </statement>
-                                                                <next>
-                                                                  <block type="notify" id=".k.ep4V,88ajkDau#|u%" disabled="true">
-                                                                    <field name="NOTIFICATION_TYPE">info</field>
-                                                                    <field name="NOTIFICATION_SOUND">silent</field>
-                                                                    <value name="MESSAGE">
-                                                                      <shadow type="text" id="SQXh6;F7t+{Fy7YFI*9z">
-                                                                        <field name="TEXT">abc</field>
-                                                                      </shadow>
-                                                                      <block type="variables_get" id="sZsixF!HSD*qS12gY70o">
-                                                                        <field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">SMI_EMA_1</field>
-                                                                      </block>
-                                                                    </value>
-                                                                  </block>
-                                                                </next>
-                                                              </block>
-                                                            </next>
-                                                          </block>
-                                                        </next>
-                                                      </block>
-                                                    </statement>
-                                                    <next>
-                                                      <block type="controls_if" id="I3q@ZM)$jpfX4QlF9QOS">
-                                                        <value name="IF0">
-                                                          <block type="logic_compare" id="sad-EA4OoagP[|h}@4Vy">
-                                                            <field name="OP">GT</field>
-                                                            <value name="A">
-                                                              <block type="lists_length" id="f,rj.Q[H^zdDG#,cY]+W">
-                                                                <value name="VALUE">
-                                                                  <block type="variables_get" id="6*Tu:_*DO[(`Z`V=Kqs:">
-                                                                    <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                                  </block>
-                                                                </value>
-                                                              </block>
-                                                            </value>
-                                                            <value name="B">
-                                                              <block type="math_number" id="H7.rHK5hLHgDC{]^$G{!">
-                                                                <field name="NUM">20</field>
-                                                              </block>
-                                                            </value>
-                                                          </block>
-                                                        </value>
-                                                        <statement name="DO0">
-                                                          <block type="lists_getIndex" id="LGC)zjFtv34zpnHR9JmJ">
-                                                            <mutation xmlns="http://www.w3.org/1999/xhtml" statement="true" at="false"></mutation>
-                                                            <field name="MODE">REMOVE</field>
-                                                            <field name="WHERE">LAST</field>
-                                                            <value name="VALUE">
-                                                              <block type="variables_get" id="#251,?4dbuMv{t4qjcZq">
-                                                                <field name="VAR" id="wyH7=]DV[E#j!QdPjJly">SMI_Data_List</field>
-                                                              </block>
-                                                            </value>
-                                                          </block>
-                                                        </statement>
-                                                        <next>
-                                                          <block type="controls_if" id="jvV,EuK62WbM-|x74mv!">
-                                                            <value name="IF0">
-                                                              <block type="logic_compare" id="ya)3WTID{WuP^hbMZ=X|">
-                                                                <field name="OP">GT</field>
-                                                                <value name="A">
-                                                                  <block type="lists_length" id="N$|5[`Y9T%@nh4%a5HVY">
-                                                                    <value name="VALUE">
-                                                                      <block type="variables_get" id="?g~Ryz[p2WgK3xlv`b4a">
-                                                                        <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                                      </block>
-                                                                    </value>
-                                                                  </block>
-                                                                </value>
-                                                                <value name="B">
-                                                                  <block type="math_number" id=";U3T3{r;Hg_0nN;Y9T%Y">
-                                                                    <field name="NUM">20</field>
-                                                                  </block>
-                                                                </value>
-                                                              </block>
-                                                            </value>
-                                                            <statement name="DO0">
-                                                              <block type="lists_getIndex" id="nO,Sabk8,2:Aiib`ejab">
-                                                                <mutation xmlns="http://www.w3.org/1999/xhtml" statement="true" at="false"></mutation>
-                                                                <field name="MODE">REMOVE</field>
-                                                                <field name="WHERE">LAST</field>
-                                                                <value name="VALUE">
-                                                                  <block type="variables_get" id="r,v^uA;/%^+%|^A7QWJE">
-                                                                    <field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">SMI_Smoothed_List</field>
-                                                                  </block>
-                                                                </value>
-                                                              </block>
-                                                            </statement>
-                                                            <next>
-                                                              <block type="bb_statement" id="set_bb_upper">
+                                  <block type="variables_set" id="smi_b1"><field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">Snapshot_List</field><value name="VALUE"><block type="lists_getSublist" id="smi_sl"><html:mutation at1="true" at2="false"></html:mutation><field name="WHERE1">FROM_END</field><field name="WHERE2">LAST</field><value name="LIST"><block type="variables_get" id="smi_c1m"><field name="VAR" id="[6Ww!y#PNM1y,5,I$jlp"> candles_1m</field></block></value><value name="AT1"><block type="math_number" id="smi_sln"><field name="NUM">10</field></block></value></block></value><next><block type="variables_set" id="smi_b2"><field name="VAR" id="v_hh">HH</field><value name="VALUE"><block type="math_on_list" id="smi_hh"><field name="OP">MAX</field><value name="LIST"><block type="variables_get" id="smi_hhg"><field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">Snapshot_List</field></block></value></block></value><next><block type="variables_set" id="smi_b3"><field name="VAR" id="v_ll">LL</field><value name="VALUE"><block type="math_on_list" id="smi_ll"><field name="OP">MIN</field><value name="LIST"><block type="variables_get" id="smi_llg"><field name="VAR" id="Z~!~fr7w+ZxI?,0`2FC;">Snapshot_List</field></block></value></block></value><next><block type="variables_set" id="smi_b4"><field name="VAR" id="=9}ul6mT4]itI?M{oK3;">Midpoint</field><value name="VALUE"><block type="math_arithmetic" id="smi_mid_d"><field name="OP">DIVIDE</field><value name="A"><shadow type="math_number" id="smi_mid_dA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_mid_a"><field name="OP">ADD</field><value name="A"><shadow type="math_number" id="smi_mid_aA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_mhh"><field name="VAR" id="v_hh">HH</field></block></value><value name="B"><shadow type="math_number" id="smi_mid_aB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_mll"><field name="VAR" id="v_ll">LL</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_mid_dB"><field name="NUM">1</field></shadow><block type="math_number" id="smi_m2"><field name="NUM">2</field></block></value></block></value><next><block type="variables_set" id="smi_b5"><field name="VAR" id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</field><value name="VALUE"><block type="math_arithmetic" id="smi_d_v"><field name="OP">MINUS</field><value name="A"><shadow type="math_number" id="smi_d_vA"><field name="NUM">1</field></shadow><block type="tick" id="smi_tick"></block></value><value name="B"><shadow type="math_number" id="smi_d_vB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_dmid"><field name="VAR" id="=9}ul6mT4]itI?M{oK3;">Midpoint</field></block></value></block></value><next><block type="variables_set" id="smi_b6"><field name="VAR" id="v_range_r">Range_R</field><value name="VALUE"><block type="math_arithmetic" id="smi_r_v"><field name="OP">MINUS</field><value name="A"><shadow type="math_number" id="smi_r_vA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_rhh"><field name="VAR" id="v_hh">HH</field></block></value><value name="B"><shadow type="math_number" id="smi_r_vB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_rll"><field name="VAR" id="v_ll">LL</field></block></value></block></value><next><block type="variables_set" id="smi_b7"><field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">D_EMA1</field><value name="VALUE"><block type="math_arithmetic" id="smi_de1_a"><field name="OP">ADD</field><value name="A"><shadow type="math_number" id="smi_de1_aA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_de1_m"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number" id="smi_de1_mA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_de1_d"><field name="OP">MINUS</field><value name="A"><shadow type="math_number" id="smi_de1_dA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_de1_in"><field name="VAR" id="=g@.dEx;.l|Dw{J(F0_x">Raw_Data</field></block></value><value name="B"><shadow type="math_number" id="smi_de1_dB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_de1_ea"><field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">D_EMA1</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_de1_mB"><field name="NUM">1</field></shadow><block type="math_number" id="smi_de1_k"><field name="NUM">0.5</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_de1_aB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_de1_eb"><field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">D_EMA1</field></block></value></block></value><next><block type="variables_set" id="smi_b8"><field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">R_EMA1</field><value name="VALUE"><block type="math_arithmetic" id="smi_re1_a"><field name="OP">ADD</field><value name="A"><shadow type="math_number" id="smi_re1_aA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_re1_m"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number" id="smi_re1_mA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_re1_d"><field name="OP">MINUS</field><value name="A"><shadow type="math_number" id="smi_re1_dA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_re1_in"><field name="VAR" id="v_range_r">Range_R</field></block></value><value name="B"><shadow type="math_number" id="smi_re1_dB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_re1_ea"><field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">R_EMA1</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_re1_mB"><field name="NUM">1</field></shadow><block type="math_number" id="smi_re1_k"><field name="NUM">0.5</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_re1_aB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_re1_eb"><field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">R_EMA1</field></block></value></block></value><next><block type="variables_set" id="smi_b9"><field name="VAR" id="wyH7=]DV[E#j!QdPjJly">D_EMA2</field><value name="VALUE"><block type="math_arithmetic" id="smi_de2_a"><field name="OP">ADD</field><value name="A"><shadow type="math_number" id="smi_de2_aA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_de2_m"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number" id="smi_de2_mA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_de2_d"><field name="OP">MINUS</field><value name="A"><shadow type="math_number" id="smi_de2_dA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_de2_in"><field name="VAR" id="_0-cW.9/4PpYxKm7WZd3">D_EMA1</field></block></value><value name="B"><shadow type="math_number" id="smi_de2_dB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_de2_ea"><field name="VAR" id="wyH7=]DV[E#j!QdPjJly">D_EMA2</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_de2_mB"><field name="NUM">1</field></shadow><block type="math_number" id="smi_de2_k"><field name="NUM">0.5</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_de2_aB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_de2_eb"><field name="VAR" id="wyH7=]DV[E#j!QdPjJly">D_EMA2</field></block></value></block></value><next><block type="variables_set" id="smi_b10"><field name="VAR" id="v_r_ema2">R_EMA2</field><value name="VALUE"><block type="math_arithmetic" id="smi_re2_a"><field name="OP">ADD</field><value name="A"><shadow type="math_number" id="smi_re2_aA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_re2_m"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number" id="smi_re2_mA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_re2_d"><field name="OP">MINUS</field><value name="A"><shadow type="math_number" id="smi_re2_dA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_re2_in"><field name="VAR" id="k0U[iGvT9WD_-b|IMFqW">R_EMA1</field></block></value><value name="B"><shadow type="math_number" id="smi_re2_dB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_re2_ea"><field name="VAR" id="v_r_ema2">R_EMA2</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_re2_mB"><field name="NUM">1</field></shadow><block type="math_number" id="smi_re2_k"><field name="NUM">0.5</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_re2_aB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_re2_eb"><field name="VAR" id="v_r_ema2">R_EMA2</field></block></value></block></value><next><block type="controls_if" id="smi_b11"><html:mutation else="1"></html:mutation><value name="IF0"><block type="logic_compare" id="smi_b11c"><field name="OP">NEQ</field><value name="A"><shadow type="math_number" id="smi_cvA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_r2c"><field name="VAR" id="v_r_ema2">R_EMA2</field></block></value><value name="B"><shadow type="math_number" id="smi_cvB"><field name="NUM">1</field></shadow><block type="math_number" id="smi_r2z"><field name="NUM">0</field></block></value></block></value><statement name="DO0"><block type="variables_set" id="smi_svs"><field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Value</field><value name="VALUE"><block type="math_arithmetic" id="smi_sv"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number" id="smi_svA"><field name="NUM">1</field></shadow><block type="math_number" id="smi_100"><field name="NUM">100</field></block></value><value name="B"><shadow type="math_number" id="smi_svB"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_dd"><field name="OP">DIVIDE</field><value name="A"><shadow type="math_number" id="smi_ddA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_d2n"><field name="VAR" id="wyH7=]DV[E#j!QdPjJly">D_EMA2</field></block></value><value name="B"><shadow type="math_number" id="smi_ddB"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_rh"><field name="OP">DIVIDE</field><value name="A"><shadow type="math_number" id="smi_rhA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_r2d"><field name="VAR" id="v_r_ema2">R_EMA2</field></block></value><value name="B"><shadow type="math_number" id="smi_rhB"><field name="NUM">1</field></shadow><block type="math_number" id="smi_r2d2"><field name="NUM">2</field></block></value></block></value></block></value></block></value></block></statement><statement name="ELSE"><block type="variables_set" id="smi_sv0"><field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Value</field><value name="VALUE"><block type="math_number" id="smi_z"><field name="NUM">0</field></block></value></block></statement><next><block type="variables_set" id="smi_b12"><field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Signal</field><value name="VALUE"><block type="math_arithmetic" id="smi_sg_a"><field name="OP">ADD</field><value name="A"><shadow type="math_number" id="smi_sg_aA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_sg_m"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number" id="smi_sg_mA"><field name="NUM">1</field></shadow><block type="math_arithmetic" id="smi_sg_d"><field name="OP">MINUS</field><value name="A"><shadow type="math_number" id="smi_sg_dA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_sg_in"><field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Value</field></block></value><value name="B"><shadow type="math_number" id="smi_sg_dB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_sg_ea"><field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Signal</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_sg_mB"><field name="NUM">1</field></shadow><block type="math_number" id="smi_sg_k"><field name="NUM">0.1818</field></block></value></block></value><value name="B"><shadow type="math_number" id="smi_sg_aB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_sg_eb"><field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Signal</field></block></value></block></value><next><block type="variables_set" id="smi_b13"><field name="VAR" id=")wcj2VHiZgYsL+^pz1EF">SMI_Slope</field><value name="VALUE"><block type="math_single" id="smi_abs"><field name="OP">ABS</field><value name="NUM"><shadow type="math_number" id="smi_ash"><field name="NUM">9</field></shadow><block type="math_arithmetic" id="smi_sl_d"><field name="OP">MINUS</field><value name="A"><shadow type="math_number" id="smi_sl_dA"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_sv13"><field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Value</field></block></value><value name="B"><shadow type="math_number" id="smi_sl_dB"><field name="NUM">1</field></shadow><block type="variables_get" id="smi_ss13"><field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Signal</field></block></value></block></value></block></value><next><block type="notify" id="smi_notify"><field name="NOTIFICATION_TYPE">success</field><field name="NOTIFICATION_SOUND">silent</field><value name="MESSAGE"><shadow type="text" id="smi_nsh"><field name="TEXT">SMI</field></shadow><block type="text_join" id="smi_tj"><mutation items="4"></mutation><value name="ADD0"><block type="text" id="smi_t0"><field name="TEXT">SMI:</field></block></value><value name="ADD1"><block type="variables_get" id="smi_nv"><field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Value</field></block></value><value name="ADD2"><block type="text" id="smi_t2"><field name="TEXT"> Sig:</field></block></value><value name="ADD3"><block type="variables_get" id="smi_ns"><field name="VAR" id="?m3=qi+=vGv+,$THi-j6">SMI_Signal</field></block></value></block></value><next><block type="bb_statement" id="set_bb_upper">
                                                                 <field name="VARIABLE" id="v_bb_upper">upper_band</field>
                                                                 <field name="BBRESULT_LIST">1</field>
                                                                 <statement name="STATEMENT">
@@ -1840,7 +1497,7 @@
                                                                                                     <field name="VAR" id="$qh|nR[O`mjD`=P@QWDx">last_histogram</field>
                                                                                                     <value name="VALUE">
                                                                                                       <block type="lists_getIndex" id="Fbb(tc`R.1NK`=)hExa+">
-                                                                                                        <mutation xmlns="http://www.w3.org/1999/xhtml" statement="false" at="false"></mutation>
+                                                                                                        <html:mutation statement="false" at="false"></html:mutation>
                                                                                                         <field name="MODE">GET</field>
                                                                                                         <field name="WHERE">LAST</field>
                                                                                                         <value name="VALUE">
@@ -1855,7 +1512,7 @@
                                                                                                         <field name="VAR" id="v_prev_hist">prev_histogram</field>
                                                                                                         <value name="VALUE">
                                                                                                           <block type="lists_getIndex" id="aNskCd!o^+F~an78OYc(">
-                                                                                                            <mutation xmlns="http://www.w3.org/1999/xhtml" statement="false" at="true"></mutation>
+                                                                                                            <html:mutation statement="false" at="true"></html:mutation>
                                                                                                             <field name="MODE">GET</field>
                                                                                                             <field name="WHERE">FROM_END</field>
                                                                                                             <value name="VALUE">
@@ -1915,7 +1572,7 @@
                                                                                                                 <field name="VAR" id="#j4xss#FZJL1n}fX@6^_">last_macd_line</field>
                                                                                                                 <value name="VALUE">
                                                                                                                   <block type="lists_getIndex" id="9L:8b?XMo=Yb8BHVVG==">
-                                                                                                                    <mutation xmlns="http://www.w3.org/1999/xhtml" statement="false" at="false"></mutation>
+                                                                                                                    <html:mutation statement="false" at="false"></html:mutation>
                                                                                                                     <field name="MODE">GET</field>
                                                                                                                     <field name="WHERE">LAST</field>
                                                                                                                     <value name="VALUE">
@@ -1970,7 +1627,7 @@
                                                                                                                         <field name="VAR" id="+3WHuxNmMx}45=zST`-Z">last_macd_signal</field>
                                                                                                                         <value name="VALUE">
                                                                                                                           <block type="lists_getIndex" id="OE*5.6%(~=sO1EVp|%ZB">
-                                                                                                                            <mutation xmlns="http://www.w3.org/1999/xhtml" statement="false" at="false"></mutation>
+                                                                                                                            <html:mutation statement="false" at="false"></html:mutation>
                                                                                                                             <field name="MODE">GET</field>
                                                                                                                             <field name="WHERE">LAST</field>
                                                                                                                             <value name="VALUE">
@@ -2085,12 +1742,12 @@
                                                                                                                                                                 <field name="TEXT">abc</field>
                                                                                                                                                               </shadow>
                                                                                                                                                               <block type="variables_get" id="hRml_~vA}2S`y/bWX)[X">
-                                                                                                                                                                <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Final</field>
+                                                                                                                                                                <field name="VAR" id="SsOL)9k:n-YE{IyR]r-z">SMI_Value</field>
                                                                                                                                                               </block>
                                                                                                                                                             </value>
                                                                                                                                                             <next>
                                                                                                                                                               <block type="controls_if" id="entry_decision">
-                                                                                                                                                                <mutation xmlns="http://www.w3.org/1999/xhtml" elseif="1"></mutation>
+                                                                                                                                                                <html:mutation elseif="1"></html:mutation>
                                                                                                                                                                 <value name="IF0">
                                                                                                                                                                   <block type="logic_operation" id="call_conditions">
                                                                                                                                                                     <field name="OP">AND</field>
@@ -3052,21 +2709,7 @@
                                                                   </block>
                                                                 </next>
                                                               </block>
-                                                            </next>
-                                                          </block>
-                                                        </next>
-                                                      </block>
-                                                    </next>
-                                                  </block>
-                                                </next>
-                                              </block>
-                                            </next>
-                                          </block>
-                                        </next>
-                                      </block>
-                                    </next>
-                                  </block>
-                                </next>
+                                                            </next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next>
                               </block>
                             </next>
                           </block>
