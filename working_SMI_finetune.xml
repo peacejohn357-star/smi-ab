@@ -48,6 +48,18 @@
     <variable id="v_entry_bb_w_prev">entry_bb_w_prev</variable>
     <variable id="smi_low_list_id">_length</variable>
     <variable id="smi_divisor_id">_smoothD</variable>
+    <variable id="smi_snapshot_id">Snapshot_List</variable>
+    <variable id="smi_hh_id">HH</variable>
+    <variable id="smi_ll_id">LL</variable>
+    <variable id="smi_m_id">M</variable>
+    <variable id="smi_d_id">D</variable>
+    <variable id="smi_r_id">R</variable>
+    <variable id="smi_d_ema1_id">D_EMA1</variable>
+    <variable id="smi_d_ema2_id">D_EMA2</variable>
+    <variable id="smi_r_ema1_id">R_EMA1</variable>
+    <variable id="smi_r_ema2_id">R_EMA2</variable>
+    <variable id="smi_value_id">SMI_Value</variable>
+    <variable id="smi_signal_id">SMI_Signal</variable>
   </variables>
   <block type="trade_definition" id="td_main" deletable="false" x="0" y="60">
     <statement name="TRADE_OPTIONS">
@@ -332,6 +344,66 @@
                                                                                                                             <field name="NUM">0</field>
                                                                                                                           </block>
                                                                                                                         </value>
+                                                                                                                        <next>
+                                                                                                                        <block type="variables_set" id="smi_init_d_ema1">
+                                                                                                                          <field name="VAR" id="smi_d_ema1_id">D_EMA1</field>
+                                                                                                                          <value name="VALUE">
+                                                                                                                            <block type="math_number" id="smi_init_d_ema1_num">
+                                                                                                                              <field name="NUM">0</field>
+                                                                                                                            </block>
+                                                                                                                          </value>
+                                                                                                                          <next>
+                                                                                                                        <block type="variables_set" id="smi_init_d_ema2">
+                                                                                                                          <field name="VAR" id="smi_d_ema2_id">D_EMA2</field>
+                                                                                                                          <value name="VALUE">
+                                                                                                                            <block type="math_number" id="smi_init_d_ema2_num">
+                                                                                                                              <field name="NUM">0</field>
+                                                                                                                            </block>
+                                                                                                                          </value>
+                                                                                                                          <next>
+                                                                                                                        <block type="variables_set" id="smi_init_r_ema1">
+                                                                                                                          <field name="VAR" id="smi_r_ema1_id">R_EMA1</field>
+                                                                                                                          <value name="VALUE">
+                                                                                                                            <block type="math_number" id="smi_init_r_ema1_num">
+                                                                                                                              <field name="NUM">0</field>
+                                                                                                                            </block>
+                                                                                                                          </value>
+                                                                                                                          <next>
+                                                                                                                        <block type="variables_set" id="smi_init_r_ema2">
+                                                                                                                          <field name="VAR" id="smi_r_ema2_id">R_EMA2</field>
+                                                                                                                          <value name="VALUE">
+                                                                                                                            <block type="math_number" id="smi_init_r_ema2_num">
+                                                                                                                              <field name="NUM">0</field>
+                                                                                                                            </block>
+                                                                                                                          </value>
+                                                                                                                          <next>
+                                                                                                                        <block type="variables_set" id="smi_init_value">
+                                                                                                                          <field name="VAR" id="smi_value_id">SMI_Value</field>
+                                                                                                                          <value name="VALUE">
+                                                                                                                            <block type="math_number" id="smi_init_value_num">
+                                                                                                                              <field name="NUM">0</field>
+                                                                                                                            </block>
+                                                                                                                          </value>
+                                                                                                                          <next>
+                                                                                                                        <block type="variables_set" id="smi_init_signal">
+                                                                                                                          <field name="VAR" id="smi_signal_id">SMI_Signal</field>
+                                                                                                                          <value name="VALUE">
+                                                                                                                            <block type="math_number" id="smi_init_signal_num">
+                                                                                                                              <field name="NUM">0</field>
+                                                                                                                            </block>
+                                                                                                                          </value>
+                                                                                                                        </block>
+                                                                                                                          </next>
+                                                                                                                        </block>
+                                                                                                                          </next>
+                                                                                                                        </block>
+                                                                                                                          </next>
+                                                                                                                        </block>
+                                                                                                                          </next>
+                                                                                                                        </block>
+                                                                                                                          </next>
+                                                                                                                        </block>
+                                                                                                                        </next>
                                                                                                                       </block>
                                                                                                                     </next>
                                                                                                                   </block>
@@ -3125,6 +3197,434 @@
                                                                                                                                                                                 </statement>
                                                                                                                                                                               </block>
                                                                                                                                                                             </statement>
+                                                                                                                                                                            <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_snapshot_set">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: Snapshot_List = last 10 tick closes (Period p=10)</comment>
+                                                                                                                                                                                <field name="VAR" id="smi_snapshot_id">Snapshot_List</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="lists_getSublist" id="smi_snap_sub">
+                                                                                                                                                                                    <mutation xmlns="http://www.w3.org/1999/xhtml" at1="true" at2="false"></mutation>
+                                                                                                                                                                                    <field name="WHERE1">FROM_END</field>
+                                                                                                                                                                                    <field name="WHERE2">LAST</field>
+                                                                                                                                                                                    <value name="LIST">
+                                                                                                                                                                                      <block type="ticks" id="smi_snap_ticks"></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="AT1">
+                                                                                                                                                                                      <block type="math_number" id="smi_period_10"><field name="NUM">10</field></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="controls_if" id="smi_new_len_guard">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: run only when 10 ticks available (Period=10)</comment>
+                                                                                                                                                                                <value name="IF0">
+                                                                                                                                                                                  <block type="logic_compare" id="smi_len_cmp">
+                                                                                                                                                                                    <field name="OP">GTE</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="lists_length" id="smi_snap_len">
+                                                                                                                                                                                        <value name="VALUE">
+                                                                                                                                                                                          <block type="variables_get" id="smi_snap_ref">
+                                                                                                                                                                                            <field name="VAR" id="smi_snapshot_id">Snapshot_List</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="math_number" id="smi_len_10"><field name="NUM">10</field></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <statement name="DO0">
+                                                                                                                                                                              <block type="variables_set" id="smi_new_hh_set">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: HH = max(Snapshot_List)</comment>
+                                                                                                                                                                                <field name="VAR" id="smi_hh_id">HH</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_on_list" id="smi_hh_max">
+                                                                                                                                                                                    <field name="OP">MAX</field>
+                                                                                                                                                                                    <value name="LIST">
+                                                                                                                                                                                      <block type="variables_get" id="smi_hh_snap">
+                                                                                                                                                                                        <field name="VAR" id="smi_snapshot_id">Snapshot_List</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_ll_set">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: LL = min(Snapshot_List)</comment>
+                                                                                                                                                                                <field name="VAR" id="smi_ll_id">LL</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_on_list" id="smi_ll_min">
+                                                                                                                                                                                    <field name="OP">MIN</field>
+                                                                                                                                                                                    <value name="LIST">
+                                                                                                                                                                                      <block type="variables_get" id="smi_ll_snap">
+                                                                                                                                                                                        <field name="VAR" id="smi_snapshot_id">Snapshot_List</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_m_set">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: M = (HH + LL) / 2</comment>
+                                                                                                                                                                                <field name="VAR" id="smi_m_id">M</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_m_div">
+                                                                                                                                                                                    <field name="OP">DIVIDE</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="math_arithmetic" id="smi_hh_ll_sum">
+                                                                                                                                                                                        <field name="OP">ADD</field>
+                                                                                                                                                                                        <value name="A">
+                                                                                                                                                                                          <block type="variables_get" id="smi_m_hh">
+                                                                                                                                                                                            <field name="VAR" id="smi_hh_id">HH</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                        <value name="B">
+                                                                                                                                                                                          <block type="variables_get" id="smi_m_ll">
+                                                                                                                                                                                            <field name="VAR" id="smi_ll_id">LL</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="math_number" id="smi_m_2"><field name="NUM">2</field></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_d_set">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: D = CurrentClose - M</comment>
+                                                                                                                                                                                <field name="VAR" id="smi_d_id">D</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_d_arith">
+                                                                                                                                                                                    <field name="OP">MINUS</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <shadow type="math_number" id="smi_close_shd"><field name="NUM">0</field></shadow>
+                                                                                                                                                                                      <block type="tick" id="smi_cur_tick"></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="variables_get" id="smi_d_m">
+                                                                                                                                                                                        <field name="VAR" id="smi_m_id">M</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_r_set">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: R = HH - LL</comment>
+                                                                                                                                                                                <field name="VAR" id="smi_r_id">R</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_r_arith">
+                                                                                                                                                                                    <field name="OP">MINUS</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="variables_get" id="smi_r_hh">
+                                                                                                                                                                                        <field name="VAR" id="smi_hh_id">HH</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="variables_get" id="smi_r_ll">
+                                                                                                                                                                                        <field name="VAR" id="smi_ll_id">LL</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_d_ema1_set">
+                                                                                                                                                                                <field name="VAR" id="smi_d_ema1_id">D_EMA1</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_new_d_ema1_set_add">
+                                                                                                                                                                                    <field name="OP">ADD</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="math_arithmetic" id="smi_new_d_ema1_set_mul">
+                                                                                                                                                                                        <field name="OP">MULTIPLY</field>
+                                                                                                                                                                                        <value name="A">
+                                                                                                                                                                                          <block type="math_arithmetic" id="smi_new_d_ema1_set_sub">
+                                                                                                                                                                                            <field name="OP">MINUS</field>
+                                                                                                                                                                                            <value name="A">
+                                                                                                                                                                                              <block type="variables_get" id="smi_new_d_ema1_set_src">
+                                                                                                                                                                                                <field name="VAR" id="smi_d_id">D</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                            <value name="B">
+                                                                                                                                                                                              <block type="variables_get" id="smi_new_d_ema1_set_prev">
+                                                                                                                                                                                                <field name="VAR" id="smi_d_ema1_id">D_EMA1</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                        <value name="B">
+                                                                                                                                                                                          <block type="math_number" id="smi_new_d_ema1_set_05">
+                                                                                                                                                                                            <field name="NUM">0.5</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="variables_get" id="smi_new_d_ema1_set_old">
+                                                                                                                                                                                        <field name="VAR" id="smi_d_ema1_id">D_EMA1</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_r_ema1_set">
+                                                                                                                                                                                <field name="VAR" id="smi_r_ema1_id">R_EMA1</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_new_r_ema1_set_add">
+                                                                                                                                                                                    <field name="OP">ADD</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="math_arithmetic" id="smi_new_r_ema1_set_mul">
+                                                                                                                                                                                        <field name="OP">MULTIPLY</field>
+                                                                                                                                                                                        <value name="A">
+                                                                                                                                                                                          <block type="math_arithmetic" id="smi_new_r_ema1_set_sub">
+                                                                                                                                                                                            <field name="OP">MINUS</field>
+                                                                                                                                                                                            <value name="A">
+                                                                                                                                                                                              <block type="variables_get" id="smi_new_r_ema1_set_src">
+                                                                                                                                                                                                <field name="VAR" id="smi_r_id">R</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                            <value name="B">
+                                                                                                                                                                                              <block type="variables_get" id="smi_new_r_ema1_set_prev">
+                                                                                                                                                                                                <field name="VAR" id="smi_r_ema1_id">R_EMA1</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                        <value name="B">
+                                                                                                                                                                                          <block type="math_number" id="smi_new_r_ema1_set_05">
+                                                                                                                                                                                            <field name="NUM">0.5</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="variables_get" id="smi_new_r_ema1_set_old">
+                                                                                                                                                                                        <field name="VAR" id="smi_r_ema1_id">R_EMA1</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_d_ema2_set">
+                                                                                                                                                                                <field name="VAR" id="smi_d_ema2_id">D_EMA2</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_new_d_ema2_set_add">
+                                                                                                                                                                                    <field name="OP">ADD</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="math_arithmetic" id="smi_new_d_ema2_set_mul">
+                                                                                                                                                                                        <field name="OP">MULTIPLY</field>
+                                                                                                                                                                                        <value name="A">
+                                                                                                                                                                                          <block type="math_arithmetic" id="smi_new_d_ema2_set_sub">
+                                                                                                                                                                                            <field name="OP">MINUS</field>
+                                                                                                                                                                                            <value name="A">
+                                                                                                                                                                                              <block type="variables_get" id="smi_new_d_ema2_set_src">
+                                                                                                                                                                                                <field name="VAR" id="smi_d_ema1_id">D_EMA1</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                            <value name="B">
+                                                                                                                                                                                              <block type="variables_get" id="smi_new_d_ema2_set_prev">
+                                                                                                                                                                                                <field name="VAR" id="smi_d_ema2_id">D_EMA2</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                        <value name="B">
+                                                                                                                                                                                          <block type="math_number" id="smi_new_d_ema2_set_05">
+                                                                                                                                                                                            <field name="NUM">0.5</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="variables_get" id="smi_new_d_ema2_set_old">
+                                                                                                                                                                                        <field name="VAR" id="smi_d_ema2_id">D_EMA2</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_r_ema2_set">
+                                                                                                                                                                                <field name="VAR" id="smi_r_ema2_id">R_EMA2</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_new_r_ema2_set_add">
+                                                                                                                                                                                    <field name="OP">ADD</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="math_arithmetic" id="smi_new_r_ema2_set_mul">
+                                                                                                                                                                                        <field name="OP">MULTIPLY</field>
+                                                                                                                                                                                        <value name="A">
+                                                                                                                                                                                          <block type="math_arithmetic" id="smi_new_r_ema2_set_sub">
+                                                                                                                                                                                            <field name="OP">MINUS</field>
+                                                                                                                                                                                            <value name="A">
+                                                                                                                                                                                              <block type="variables_get" id="smi_new_r_ema2_set_src">
+                                                                                                                                                                                                <field name="VAR" id="smi_r_ema1_id">R_EMA1</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                            <value name="B">
+                                                                                                                                                                                              <block type="variables_get" id="smi_new_r_ema2_set_prev">
+                                                                                                                                                                                                <field name="VAR" id="smi_r_ema2_id">R_EMA2</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                        <value name="B">
+                                                                                                                                                                                          <block type="math_number" id="smi_new_r_ema2_set_05">
+                                                                                                                                                                                            <field name="NUM">0.5</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="variables_get" id="smi_new_r_ema2_set_old">
+                                                                                                                                                                                        <field name="VAR" id="smi_r_ema2_id">R_EMA2</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="controls_if" id="smi_new_r_ema2_guard">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: compute SMI_Value only when R_EMA2 != 0</comment>
+                                                                                                                                                                                <value name="IF0">
+                                                                                                                                                                                  <block type="logic_compare" id="smi_r_ema2_neq">
+                                                                                                                                                                                    <field name="OP">NEQ</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="variables_get" id="smi_r_ema2_chk">
+                                                                                                                                                                                        <field name="VAR" id="smi_r_ema2_id">R_EMA2</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="math_number" id="smi_r_ema2_zero"><field name="NUM">0</field></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <statement name="DO0">
+                                                                                                                                                                              <block type="variables_set" id="smi_new_value_set">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: SMI_Value = 100 * (D_EMA2 / (R_EMA2 / 2))</comment>
+                                                                                                                                                                                <field name="VAR" id="smi_value_id">SMI_Value</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_val_mul100">
+                                                                                                                                                                                    <field name="OP">MULTIPLY</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="math_number" id="smi_val_100"><field name="NUM">100</field></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="math_arithmetic" id="smi_val_div">
+                                                                                                                                                                                        <field name="OP">DIVIDE</field>
+                                                                                                                                                                                        <value name="A">
+                                                                                                                                                                                          <block type="variables_get" id="smi_val_d_ema2">
+                                                                                                                                                                                            <field name="VAR" id="smi_d_ema2_id">D_EMA2</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                        <value name="B">
+                                                                                                                                                                                          <block type="math_arithmetic" id="smi_r_ema2_half">
+                                                                                                                                                                                            <field name="OP">DIVIDE</field>
+                                                                                                                                                                                            <value name="A">
+                                                                                                                                                                                              <block type="variables_get" id="smi_r_ema2_val">
+                                                                                                                                                                                                <field name="VAR" id="smi_r_ema2_id">R_EMA2</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                            <value name="B">
+                                                                                                                                                                                              <block type="math_number" id="smi_r_half_2"><field name="NUM">2</field></block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="variables_set" id="smi_new_signal_set">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: SMI_Signal = (SMI_Value - SMI_Signal) * 0.1818 + SMI_Signal</comment>
+                                                                                                                                                                                <field name="VAR" id="smi_signal_id">SMI_Signal</field>
+                                                                                                                                                                                <value name="VALUE">
+                                                                                                                                                                                  <block type="math_arithmetic" id="smi_sig_add">
+                                                                                                                                                                                    <field name="OP">ADD</field>
+                                                                                                                                                                                    <value name="A">
+                                                                                                                                                                                      <block type="math_arithmetic" id="smi_sig_mul">
+                                                                                                                                                                                        <field name="OP">MULTIPLY</field>
+                                                                                                                                                                                        <value name="A">
+                                                                                                                                                                                          <block type="math_arithmetic" id="smi_sig_sub">
+                                                                                                                                                                                            <field name="OP">MINUS</field>
+                                                                                                                                                                                            <value name="A">
+                                                                                                                                                                                              <block type="variables_get" id="smi_sig_val_get">
+                                                                                                                                                                                                <field name="VAR" id="smi_value_id">SMI_Value</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                            <value name="B">
+                                                                                                                                                                                              <block type="variables_get" id="smi_sig_prev_get">
+                                                                                                                                                                                                <field name="VAR" id="smi_signal_id">SMI_Signal</field>
+                                                                                                                                                                                              </block>
+                                                                                                                                                                                            </value>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                        <value name="B">
+                                                                                                                                                                                          <block type="math_number" id="smi_sig_1818">
+                                                                                                                                                                                            <field name="NUM">0.1818</field>
+                                                                                                                                                                                          </block>
+                                                                                                                                                                                        </value>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="B">
+                                                                                                                                                                                      <block type="variables_get" id="smi_sig_old_get">
+                                                                                                                                                                                        <field name="VAR" id="smi_signal_id">SMI_Signal</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                                <next>
+                                                                                                                                                                              <block type="notify" id="smi_new_notify">
+                                                                                                                                                                                <comment pinned="false" h="60" w="320">SMI: notify SMI_Value and SMI_Signal each tick</comment>
+                                                                                                                                                                                <field name="NOTIFICATION_TYPE">success</field>
+                                                                                                                                                                                <field name="NOTIFICATION_SOUND">silent</field>
+                                                                                                                                                                                <value name="MESSAGE">
+                                                                                                                                                                                  <shadow type="text" id="smi_ntfy_shd"><field name="TEXT">SMI/Signal:</field></shadow>
+                                                                                                                                                                                  <block type="text_join" id="smi_new_join">
+                                                                                                                                                                                    <mutation items="4"/>
+                                                                                                                                                                                    <value name="ADD0">
+                                                                                                                                                                                      <block type="text" id="smi_lbl_smi"><field name="TEXT">SMI:</field></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="ADD1">
+                                                                                                                                                                                      <block type="variables_get" id="smi_val_disp">
+                                                                                                                                                                                        <field name="VAR" id="smi_value_id">SMI_Value</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="ADD2">
+                                                                                                                                                                                      <block type="text" id="smi_lbl_sig"><field name="TEXT"> Signal:</field></block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                    <value name="ADD3">
+                                                                                                                                                                                      <block type="variables_get" id="smi_sig_disp">
+                                                                                                                                                                                        <field name="VAR" id="smi_signal_id">SMI_Signal</field>
+                                                                                                                                                                                      </block>
+                                                                                                                                                                                    </value>
+                                                                                                                                                                                  </block>
+                                                                                                                                                                                </value>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </statement>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </statement>
+                                                                                                                                                                              </block>
+                                                                                                                                                                                </next>
+                                                                                                                                                                              </block>
+                                                                                                                                                                            </next>
                                                                                                                                                                           </block>
                                                                                                                                                                         </next>
                                                                                                                                                                       </block>
